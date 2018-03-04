@@ -89,7 +89,7 @@ class COCO_dataset_generator(object):
             config = BagsConfig()
             
             # Create model object in inference mode.
-            model = modellib.MaskRCNN(mode="inference", model_dir=args['model_path'], config=config)
+            model = modellib.MaskRCNN(mode="inference", model_dir='/'.join(args['weights_path'].split('/')[:-2]), config=config)
 
             # Load weights trained on MS-COCO
             model.load_weights(args['weights_path'], by_name=True)
@@ -357,7 +357,6 @@ if __name__=='__main__':
     ap.add_argument("-i", "--image_dir", required=True, help="Path to the image dir") 
     ap.add_argument("-f", "--feedback", required=False, help="Whether or not to include AI feedback", action='store_true')
     ap.add_argument('-p', "--maskrcnn_dir", default='/home/hans/Desktop/Vision Internship/Mask_RCNN/', help="Path to Mask RCNN Repo")
-    ap.add_argument('-m', "--model_path", default='/home/hans/Desktop/Vision Internship/Mask_RCNN/logs/', help="Path to Mask RCNN checkpoint master folder")
     ap.add_argument('-w', "--weights_path", default='/home/hans/Desktop/Vision Internship/Mask_RCNN/logs/imagenet_10/mask_rcnn_bags_0006.h5', help="Path to Mask RCNN checkpoint save file")
     args = vars(ap.parse_args())
     

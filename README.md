@@ -21,14 +21,14 @@ Clone the repo.
 git clone https://github.com/hanskrupakar/COCO-Style-Dataset-Generator-GUI.git
 ```
 
-######Running the segmentation GUI without Mask RCNN pretrained predictions:
+###### Running the segmentation GUI without Mask RCNN pretrained predictions:
 
 ```
 cd COCO-Style-Dataset-Generator-GUI/
 python3 segment.py -i images/
 ```
 
-######Running the segmentation GUI augmented by initial Mask RCNN pretrained model predictions:
+###### Running the segmentation GUI augmented by initial Mask RCNN pretrained model predictions:
 
 First download the Mask RCNN repo in the same parent directory of COCO-Style-Dataset-Generator-GUI/.
 

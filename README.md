@@ -42,16 +42,16 @@ To run the particular model for the demo, download the pretrained weights from [
 python3 segment.py -i images -f -p ../Mask_RCNN/ -w pretrained_weights/imagenet_10/mask_rcnn_bags_0006.h5 
 ```
 
-##### USAGE: segment.py [-h] -i IMAGE_DIR [-f] [-p MASKRCNN_DIR] [-w WEIGHTS_PATH]
+`USAGE: segment.py [-h] -i IMAGE_DIR [-f] [-p MASKRCNN_DIR] [-w WEIGHTS_PATH]`
 
 
-| Optional Arguments  | | |
-|: ------------- :|:-------------:| -----:|
-| -h     | --help | Show this help message and exit |
-| -i  IMAGE_DIR      | --image_dir IMAGE_DIR      |   Path to the image dir |
-| -f |  --feedback      |  Whether or not to include AI feedback|
-| -p MASKRCNN_DIR      | --maskrcnn_dir MASKRCNN_DIR | Path to Mask RCNN Repo |
-| -w WEIGHTS_PATH      | --weights_path WEIGHTS_PATH      |   Path to Mask RCNN checkpoint save file |
+##### Optional Arguments 
+
+ -h                     --help                          Show this help message and exit 
+ -i IMAGE_DIR           --image_dir IMAGE_DIR           Path to the image dir 
+ -f                     --feedback                      Whether or not to include AI feedback
+ -p MASKRCNN_DIR        --maskrcnn_dir MASKRCNN_DIR     Path to Mask RCNN Repo 
+ -w WEIGHTS_PATH        --weights_path WEIGHTS_PATH     Path to Mask RCNN checkpoint save file 
 
 ### SEGMENTATION GUI CONTROLS:
 

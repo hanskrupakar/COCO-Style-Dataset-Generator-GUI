@@ -1,7 +1,7 @@
 # COCO-Style-Dataset-Generator-GUI
 This is a simple GUI-based Widget based on matplotlib in Python to facilitate quick and efficient crowd-sourced generation of annotation masks and bounding boxes using a simple interactive User Interface. Optionally, one could choose to use a pretrained Mask RCNN model to come up with initial segmentations. This shifts the work load from painstakingly annotating all the objects in every image to altering wrong predictions made by the system which maybe simpler once an efficient model is learnt.
 
-## REQUIREMENTS:
+### REQUIREMENTS:
 
 `Python 3.5+` is required to run the Mask RCNN code. If only the GUI tool is used, `Python2.7` or `Python3.5+` can be used.
 
@@ -13,7 +13,7 @@ Before running the code, install required pre-requisite python packages using pi
 pip install -r requirements.txt
 ```
 
-## RUN THE SEGMENTOR GUI:
+### RUN THE SEGMENTOR GUI:
 
 Clone the repo.
 
@@ -42,20 +42,17 @@ To run the particular model for the demo, download the pretrained weights from [
 python3 segment.py -i images -f -p ../Mask_RCNN/ -w pretrained_weights/imagenet_10/mask_rcnn_bags_0006.h5 
 ```
 
-usage: segment.py [-h] -i IMAGE_DIR [-f] [-p MASKRCNN_DIR] [-w WEIGHTS_PATH]
+##### USAGE: segment.py [-h] -i IMAGE_DIR [-f] [-p MASKRCNN_DIR] [-w WEIGHTS_PATH]
 
-Optional Arguments:
+##### Optional Arguments:
+| --- |
+ | -h | --help | show this help message and exit|
+ | -i  IMAGE_DIR |--image_dir IMAGE_DIR |                       Path to the image dir|
+ | -f | --feedback     |   Whether or not to include AI feedback|
+ | -p MASKRCNN_DIR | --maskrcnn_dir MASKRCNN_DIR |                       Path to Mask RCNN Repo|
+ | -w WEIGHTS_PATH | --weights_path WEIGHTS_PATH |                       Path to Mask RCNN checkpoint save file |
 
-  -h, --help            show this help message and exit
-  -i IMAGE_DIR, --image_dir IMAGE_DIR
-                        Path to the image dir
-  -f, --feedback        Whether or not to include AI feedback
-  -p MASKRCNN_DIR, --maskrcnn_dir MASKRCNN_DIR
-                        Path to Mask RCNN Repo
-  -w WEIGHTS_PATH, --weights_path WEIGHTS_PATH
-                        Path to Mask RCNN checkpoint save file
-
-## SEGMENTATION GUI CONTROLS:
+### SEGMENTATION GUI CONTROLS:
 
 ![deepmagic](https://github.com/hanskrupakar/COCO-Style-Dataset-Generator-GUI/blob/master/gui.png)
 

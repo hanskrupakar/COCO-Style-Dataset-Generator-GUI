@@ -45,8 +45,8 @@ python3 segment.py -i images -f -p ../Mask_RCNN/ -w pretrained_weights/imagenet_
 ##### USAGE: segment.py [-h] -i IMAGE_DIR [-f] [-p MASKRCNN_DIR] [-w WEIGHTS_PATH]
 
 
-| Optional Arguments:  |
-| ------------- |:-------------:| -----:|
+| Optional Arguments  | | |
+|: ------------- :|:-------------:| -----:|
 | -h     | --help | Show this help message and exit |
 | -i  IMAGE_DIR      | --image_dir IMAGE_DIR      |   Path to the image dir |
 | -f |  --feedback      |  Whether or not to include AI feedback|

@@ -47,17 +47,14 @@ python3 segment.py -i images -f -p ../Mask_RCNN/ -w pretrained_weights/imagenet_
 
 ##### Optional Arguments 
 
-| --- | --- | --- |
-| -h | --help | Show this help message and exit |
-
-| -f | --feedback | Whether or not to include AI feedback |
-| -p MASKRCNN_DIR | --maskrcnn_dir MASKRCNN_DIR | Path to Mask RCNN Repo |
-| -w WEIGHTS_PATH | --weights_path WEIGHTS_PATH | Path to Mask RCNN checkpoint save file |
 
 | Shorthand  | Flag Name | Description |
 | ------------- | ------------- | ------------- |
-| -h   | --help  | |
+| -h   | --help  | Show this help message and exit |
 | -i IMAGE_DIR | --image_dir IMAGE_DIR | Path to the image dir |
+| -f | --feedback | Whether or not to include AI feedback |
+| -p MASKRCNN_DIR | --maskrcnn_dir MASKRCNN_DIR | Path to Mask RCNN Repo |
+| -w WEIGHTS_PATH | --weights_path WEIGHTS_PATH | Path to Mask RCNN checkpoint save file |
 
 ### SEGMENTATION GUI CONTROLS:
 

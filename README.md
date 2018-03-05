@@ -66,7 +66,7 @@ In this demo, all the green patches over the objects are the rough masks generat
   Key-bindings/
     Buttons
 
-   EDIT MODE (when `a` is clicked and polygon is being edited)
+   EDIT MODE (when `a` is pressed and polygon is being edited)
    
       'a'       toggle vertex markers on and off.  When vertex markers are on, you can move them, delete them
 

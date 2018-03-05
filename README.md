@@ -74,19 +74,19 @@ In this demo, all the green patches over the objects are the rough masks generat
 
       'i'       insert a vertex at point near the boundary of the polygon.
       
-      Left click and drag can be used on any point of the polygon to skew the polygon
+  Left click    click and drag can be used on any point of the polygon to skew the polygon
 
   REGULAR MODE
   
-  Scroll Up     Zoom into image
-  Scroll Down   Zoom out of image
-  Right Click   Create a point for a polygon mask around an object
-  Left Click    Complete the polygon currently formed by connecting all selected points
+    Scroll Up       Zoom into image
+    Scroll Down     Zoom out of image
+    Right Click     Create a point for a polygon mask around an object
+    Left Click      Complete the polygon currently formed by connecting all selected points
   
-    SUBMIT      To be clicked after Right click completes polygon! Finalizes current segmentation mask and class label picked. After this, the polygon cannot be edited.
-    NEXT        Save all annotations created for current file and move on to next image
-    PREV        Goto previous image to re-annotate it. This deletes the annotations created for the file before the current one in order to rewrite the fresh annotations.
-    RESET       If when drawing the polygon using points, the polygon doesn't cover the object properly, reset will let you start fresh with the current polygon. This deletes all the points on the image.
+    SUBMIT          To be clicked after Right click completes polygon! Finalizes current segmentation mask and class label picked. After this, the polygon cannot be edited.
+    NEXT            Save all annotations created for current file and move on to next image
+    PREV            Goto previous image to re-annotate it. This deletes the annotations created for the file before the current one in order to rewrite the fresh annotations.
+    RESET           If when drawing the polygon using points, the polygon doesn't cover the object properly, reset will let you start fresh with the current polygon. This deletes all the points on the image.
 
 The green annotation boxes from the network can be edited by pressing on the Keyboard key `a` when the mouse pointer is on top of a particular such mask. Once you press `a`, the points making up that polygon will show up and you can then edit it using the key bindings specified. Because of the nature of the polygon points being so close to each other, it's easier to delete all the cluttered points at some place of deformation and simply dragging points around to make the image. I suggest not using the insert vertex option `i` as deleting and dragging is just faster. Once you're done editing the polygon, press `a` again to finalize the edits. At this point, it will become possible to submit that particular annotation and move on to the next one.
 

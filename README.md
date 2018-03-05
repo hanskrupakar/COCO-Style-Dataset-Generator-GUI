@@ -53,6 +53,11 @@ python3 segment.py -i images -f -p ../Mask_RCNN/ -w pretrained_weights/imagenet_
  -p MASKRCNN_DIR        --maskrcnn_dir MASKRCNN_DIR     Path to Mask RCNN Repo 
  -w WEIGHTS_PATH        --weights_path WEIGHTS_PATH     Path to Mask RCNN checkpoint save file 
 
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
 ### SEGMENTATION GUI CONTROLS:
 
 ![deepmagic](https://github.com/hanskrupakar/COCO-Style-Dataset-Generator-GUI/blob/master/gui.png)

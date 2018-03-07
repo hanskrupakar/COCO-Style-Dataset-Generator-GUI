@@ -25,11 +25,21 @@ if __name__=='__main__':
         with open(f[:-3]+'txt', 'r') as f:
             txt = f.read().split('\n')
             
-            for index in range(6, len(txt), 4):
+            index = 6
+            #for index in range(6, len(txt), 4):
+            while (index < len(txt)):
                 #print (txt[index])
                 num = [float(x) for x in txt[index].split(' ')[:-1]]
                 num = np.reshape(np.array(num), (int(len(num)/2), 2))
                 polys.append(Polygon(num, closed=True))
+                
+                while index+1<len(txt) and txt[index+1]!='':
+                    index+=1
+                    num = [float(x) for x in txt[index].split(' ')[:-1]]
+                    num = np.reshape(np.array(num), (int(len(num)/2), 2))
+                    polys.append(Polygon(num, closed=True))
+                index+=4
+                
             ax.imshow(image)
             p = PatchCollection(polys, cmap=matplotlib.cm.jet, linewidths=0, alpha=0.5)
             p.set_array(colors)

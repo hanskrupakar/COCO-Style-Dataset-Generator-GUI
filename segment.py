@@ -4,6 +4,8 @@ from matplotlib.patches import Polygon
 from matplotlib.widgets import RadioButtons
 from matplotlib.path import Path
 
+from skimage.measure import find_contours
+
 from PIL import Image
 import matplotlib
 
@@ -84,7 +86,7 @@ class COCO_dataset_generator(object):
             import model as modellib
             from demo import BagsConfig
             from skimage.measure import find_contours
-            from visualize_cv2 import random_colors, find_contours
+            from visualize_cv2 import random_colors
             
             config = BagsConfig()
             

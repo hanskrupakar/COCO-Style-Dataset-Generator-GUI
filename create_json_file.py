@@ -27,19 +27,20 @@ for i, f in enumerate(sorted(glob.glob(os.path.join(os.path.abspath(args['image_
     ptr = 0
     with open(f, 'r') as g:
         s = g.read()
-    s = s.split('\n')[4:-2]
+    s = s.split('\n')[4:-1]
     
     while(ptr<len(s)):
         
         cat_id = classes.index(s[ptr])+1
         area = float(s[ptr+1])
         poly = [[float(x) for x in s[ptr+2].split(' ')[:-1]]]
+        
         if len(s)>ptr+3 and s[ptr+3] != '':
             ind = ptr + 3
-            while (s[ind]!=''):
+            while (ind<len(s) and s[ind]!=''):
                 poly.append([float(x) for x in s[ind].split(' ')[:-1]])
                 ind+=1
-            ptr = ind
+            ptr = ind-3
         
         x1, x2, y1, y2 = None, None, None, None
         for p in poly:

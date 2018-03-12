@@ -73,8 +73,8 @@ In this demo, all the green patches over the objects are the rough masks generat
       'd'       delete the vertex under point
 
       'i'       insert a vertex at point near the boundary of the polygon.
-      
-  Left click    click and drag can be used on any point of the polygon to skew the polygon
+
+    Left click  Use on any point on the polygon boundary and move around by dragging to alter shape of polygon
 
   REGULAR MODE 
   

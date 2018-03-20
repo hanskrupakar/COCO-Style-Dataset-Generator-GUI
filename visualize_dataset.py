@@ -12,6 +12,7 @@ if __name__=='__main__':
 
     ap = argparse.ArgumentParser()
     ap.add_argument("-i", "--image_dir", required=True, help="Path to the image dir") 
+    ap.add_argument("-s", "--save", help="save instance of annotated image", action='store_true') 
     args = vars(ap.parse_args())
     
     colors = 100*np.random.random(20)
@@ -20,7 +21,8 @@ if __name__=='__main__':
     
         image = plt.imread(f)
         fig, ax = plt.subplots()
-        
+        ax.set_yticklabels([])
+        ax.set_xticklabels([])
         polys = []
         with open(f[:-3]+'txt', 'r') as f:
             txt = f.read().split('\n')
@@ -44,4 +46,8 @@ if __name__=='__main__':
             p = PatchCollection(polys, cmap=matplotlib.cm.jet, linewidths=0, alpha=0.5)
             p.set_array(colors)
             ax.add_collection(p)
-            plt.show()
+
+            if args['save']:
+                plt.savefig('saved_fig.jpg', bbox_inches='tight')
+            else:
+                plt.show()

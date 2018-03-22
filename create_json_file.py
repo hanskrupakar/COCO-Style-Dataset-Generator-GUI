@@ -4,6 +4,10 @@ import argparse
 import os
 import numpy as np
 import json
+
+from json import encoder
+encoder.FLOAT_REPR = lambda o: format(o, '.2f')
+
 import cv2
 from segment import COCO_dataset_generator as cocogen
 
@@ -65,7 +69,7 @@ for i, f in enumerate(sorted(glob.glob(os.path.join(os.path.abspath(args['image_
         ptr+=4
         anns.append(dic2)
 
-data = {'images':images, 'annotations':anns, 'categories':[]}
+data = {'images':images, 'annotations':anns, 'categories':[], 'classes': classes}
 
 with open('dataset.json', 'w') as outfile:
     json.dump(data, outfile)

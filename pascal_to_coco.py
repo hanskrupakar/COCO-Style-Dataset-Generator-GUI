@@ -3,6 +3,10 @@ import argparse
 import glob
 import xml.etree.ElementTree as ET
 import json
+
+from json import encoder
+encoder.FLOAT_REPR = lambda o: format(o, '.2f')
+
 import cv2
 
 classes = ['black_backpack', 'nine_west_bag', 'meixuan_brown_handbag', 'sm_bdrew_grey_handbag', 'wine_red_handbag', 'sm_bclarre_blush_crossbody', 'mk_brown_wrislet', 'black_plain_bag', 'lmk_brown_messenger_bag', 'sm_peach_backpack', 'black_ameligalanti', 'white_bag']   
@@ -30,13 +34,13 @@ if __name__=='__main__':
        
             cls_id = classes.index(obj.find('name').text)+1
             bx = [int(obj.find('bndbox').find('xmax').text), int(obj.find('bndbox').find('ymax').text), int(obj.find('bndbox').find('xmin').text), int(obj.find('bndbox').find('ymin').text)]
-            pts = [bx[2], bx[3], bx[0], bx[3], bx[0], bx[1], bx[2], bx[1]]
+            pts = [bx[2], bx[3], bx[0], bx[3], bx[0], bx[1], bx[2], bx[1]] # Create mask as the bounding box itself
             area = (bx[0]-bx[2])*(bx[1]-bx[3])
-            dic2 = {'segmentation': pts, 'area': area, 'iscrowd':0, 'image_id':i, 'bbox':bx, 'category_id': cls_id, 'id': ann_index}
+            dic2 = {'segmentation': [pts], 'area': area, 'iscrowd':0, 'image_id':i, 'bbox':bx, 'category_id': cls_id, 'id': ann_index}
             ann_index+=1
             anns.append(dic2)
 
-    data = {'images':images, 'annotations':anns, 'categories':[]}
+    data = {'images':images, 'annotations':anns, 'categories':[], 'classes':classes}
 
     with open('pascal_dataset.json', 'w') as outfile:
         json.dump(data, outfile)

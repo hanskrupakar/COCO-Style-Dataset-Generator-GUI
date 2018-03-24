@@ -93,11 +93,13 @@ The green annotation boxes from the network can be edited by pressing on the Key
 
 ### LIST OF FUNCTIONALITIES:
 
-create_json_file.py     Takes a directory of annotated images (use segment.py to annotate into text files) and returns a COCO-style JSON file.
-extract_frames.py       Takes a directory of videos and extracts all the frames of all videos into a folder labeled adequately by the video name.
-pascal_to_coco.py       Takes a PASCAL-style dataset directory with JPEGImages/ and Annotations/ folders and uses the bounding box as masks to create a COCO-style JSON file
-poly_editor.py          Contains the class used for modifying the shape of a polygon in edit mode ( when `a` is pressed)
-remove_bars.py          Removes any black bars that are formed during video recording by working on the extracted frames.
-segment.py              Read the instructions above.
-test_*.py               Unit tests for every task.
-visualize_dataset.py    Visualize the annotations created using the tool.
+        FILE                            FUNCTIONALITY
+
+    create_json_file.py     Takes a directory of annotated images (use segment.py to annotate into text files) and returns a COCO-style JSON file.
+    extract_frames.py       Takes a directory of videos and extracts all the frames of all videos into a folder labeled adequately by the video name.
+    pascal_to_coco.py       Takes a PASCAL-style dataset directory with JPEGImages/ and Annotations/ folders and uses the bounding box as masks to create a COCO-style JSON file
+    poly_editor.py          Contains the class used for modifying the shape of a polygon in edit mode ( when `a` is pressed)
+    remove_bars.py          Removes any black bars that are formed during video recording by working on the extracted frames.
+    segment.py              Read the instructions above.
+    test_*.py               Unit tests for every task.
+    visualize_dataset.py    Visualize the annotations created using the tool.

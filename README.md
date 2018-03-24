@@ -1,5 +1,5 @@
 # COCO-Style-Dataset-Generator-GUI
-This is a simple GUI-based Widget based on matplotlib in Python to facilitate quick and efficient crowd-sourced generation of annotation masks and bounding boxes using a simple interactive User Interface. Optionally, one could choose to use a pretrained Mask RCNN model to come up with initial segmentations. This shifts the work load from painstakingly annotating all the objects in every image to altering wrong predictions made by the system which maybe simpler once an efficient model is learnt.
+This is a simple GUI-based Widget based on matplotlib in Python to facilitate quick and efficient crowd-sourced generation of annotation masks and bounding boxes using a simple interactive User Interface. Annotation can be in terms of polygon points covering all parts of an object (see instructions in README) or it can simply be a bounding box, for which you click and drag the mouse button. Optionally, one could choose to use a pretrained Mask RCNN model to come up with initial segmentations. This shifts the work load from painstakingly annotating all the objects in every image to altering wrong predictions made by the system which maybe simpler once an efficient model is learnt.
 
 ### REQUIREMENTS:
 
@@ -82,7 +82,8 @@ In this demo, all the green patches over the objects are the rough masks generat
     Scroll Down     Zoom out of image
     Right Click     Create a point for a polygon mask around an object
     Left Click      Complete the polygon currently formed by connecting all selected points
-  
+    Left Click Drag Create a bounding box rectangle from point 1 to point 2 (works only when there are no polygon points on screen for particular object)    
+    
     SUBMIT          To be clicked after Right click completes polygon! Finalizes current segmentation mask and class label picked. After this, the polygon cannot be edited.
     NEXT            Save all annotations created for current file and move on to next image
     PREV            Goto previous image to re-annotate it. This deletes the annotations created for the file before the current one in order to rewrite the fresh annotations.
@@ -90,4 +91,13 @@ In this demo, all the green patches over the objects are the rough masks generat
 
 The green annotation boxes from the network can be edited by pressing on the Keyboard key `a` when the mouse pointer is on top of a particular such mask. Once you press `a`, the points making up that polygon will show up and you can then edit it using the key bindings specified. Because of the nature of the polygon points being so close to each other, it's easier to delete all the cluttered points at some place of deformation and simply dragging points around to make the image. I suggest not using the insert vertex option `i` as deleting and dragging is just faster. Once you're done editing the polygon, press `a` again to finalize the edits. At this point, it will become possible to submit that particular annotation and move on to the next one.
 
+### LIST OF FUNCTIONALITIES:
 
+create_json_file.py - Takes a directory of annotated images (use segment.py to annotate into text files) and returns a COCO-style JSON file.
+extract_frames.py - Takes a directory of videos and extracts all the frames of all videos into a folder labeled adequately by the video name.
+pascal_to_coco.py - Takes a PASCAL-style dataset directory with JPEGImages/ and Annotations/ folders and uses the bounding box as masks to create a COCO-style JSON file
+poly_editor.py - Contains the class used for modifying the shape of a polygon in edit mode ( when `a` is pressed)
+remove_bars.py - Removes any black bars that are formed during video recording by working on the extracted frames.
+segment.py - Read the instructions above.
+test_*.py - Unit tests for every task.
+visualize_dataset.py - Visualize the annotations created using the tool.

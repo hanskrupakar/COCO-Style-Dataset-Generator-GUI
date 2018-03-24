@@ -39,6 +39,7 @@ class COCO_dataset_generator(object):
         
         self.zoom_id = fig.canvas.mpl_connect('scroll_event', self.zoom)
         self.click_id = fig.canvas.mpl_connect('button_press_event', self.onclick)
+        self.clickrel_id = fig.canvas.mpl_connect('button_release_event', self.onclick_release)
         self.keyboard_id = fig.canvas.mpl_connect('key_press_event', self.onkeyboard)
         
         self.axreset = plt.axes([0.48, 0.05, 0.1, 0.05])
@@ -64,14 +65,18 @@ class COCO_dataset_generator(object):
         self.text = ''
         
         self.axradio = plt.axes([0.05, 0.2, 0.15, 0.5])
-        self.radio = RadioButtons(self.axradio, ('blue_perfume', 'black_perfume', 'double_speedstick', 'blue_speedstick', 'dove_blue', 'dove_perfume', 'dove_pink', 'green_speedstick', 'gear_deo', 'dove_black', 'grey_speedstick', 'choc_blue', 'choc_red', 'choc_yellow', 'black_cup', 'nyu_cup', 'ilny_white', 'ilny_blue', 'ilny_black', 'human'))
 
-        if self.img_dir[-1]=='/':
-            self.img_dir = self.img_dir[:-1]
-        self.img_paths = sorted(glob.glob(self.img_dir+'/*.jpg'))
+        self.class_names = ('black_backpack', 'nine_west_bag', 'meixuan_brown_handbag', 'sm_bdrew_grey_handbag', 'wine_red_handbag', 'sm_bclarre_blush_crossbody', 'mk_brown_wrislet', 'black_plain_bag', 'lmk_brown_messenger_bag', 'sm_peach_backpack', 'black_ameligalanti', 'white_bag')  
+
+        self.radio = RadioButtons(self.axradio, self.class_names)
+        self.class_names = ('BG',) + self.class_names
         
+        self.img_paths = sorted(glob.glob(os.path.join(self.img_dir, '*.jpg')))
+        
+        if len(self.img_paths)==0:
+            self.img_paths = sorted(glob.glob(os.path.join(self.img_dir, '*.png')))
         if os.path.exists(self.img_paths[self.index][:-3]+'txt'):
-            self.index = len(glob.glob(self.img_dir+'/*.txt'))
+            self.index = len(glob.glob(os.path.join(self.img_dir, '*.txt')))
         self.checkpoint = self.index
         im = Image.open(self.img_paths[self.index])
         width, height = im.size
@@ -111,8 +116,6 @@ class COCO_dataset_generator(object):
             
             class_ids, scores = r['class_ids'], r['scores'] 
             
-            self.class_names = ('background', 'blue_perfume', 'black_perfume', 'double_speedstick', 'blue_speedstick', 'dove_blue', 'dove_perfume', 'dove_pink', 'green_speedstick', 'gear_deo', 'dove_black', 'grey_speedstick', 'choc_blue', 'choc_red', 'choc_yellow', 'black_cup', 'nyu_cup', 'ilny_white', 'ilny_blue', 'ilny_black', 'human')
-        
             for i in range(N):
                 color = colors[i]
                 
@@ -150,6 +153,7 @@ class COCO_dataset_generator(object):
     def deactivate_all(self):
         self.fig.canvas.mpl_disconnect(self.zoom_id)
         self.fig.canvas.mpl_disconnect(self.click_id)
+        self.fig.canvas.mpl_disconnect(self.clickrel_id)
         self.fig.canvas.mpl_disconnect(self.keyboard_id)
     
     def onkeyboard(self, event):
@@ -242,7 +246,10 @@ class COCO_dataset_generator(object):
                 circle = plt.Circle((event.xdata,event.ydata),2.5,color='black')
                 self.ax.add_artist(circle)
                 self.circles.append(circle)
-            
+                
+                if (len(self.points)<4):
+                    self.r_x = event.xdata
+                    self.r_y = event.ydata
             else:
                 if len(self.points)>5:
                     self.right_click=True
@@ -276,7 +283,26 @@ class COCO_dataset_generator(object):
         x, y = coords[0], coords[1]
         #print (x,y)
         return 0.5*np.abs(np.dot(x,np.roll(y,1))-np.dot(y,np.roll(x,1))) #shoelace algorithm
-
+    
+    def onclick_release(self, event):
+        
+        if not event.inaxes:
+            return
+        
+        elif self.r_x and np.abs(event.xdata - self.r_x)>10 and np.abs(event.ydata - self.r_y)>10: # 10 pixels limit for rectangle creation    
+            if len(self.points)<4:
+                
+                self.right_click=True
+                self.fig.canvas.mpl_disconnect(self.click_id)
+                self.click_id = None
+                bbox = [np.min([event.xdata, self.r_x]), np.min([event.ydata, self.r_y]), np.max([event.xdata, self.r_x]), np.max([event.ydata, self.r_y])]
+                self.r_x = self.r_y = None
+           
+                self.points = [bbox[0], bbox[1], bbox[0], bbox[3], bbox[2], bbox[3], bbox[2], bbox[1], bbox[0], bbox[1]]
+                self.p = PatchCollection([Polygon(self.points_to_polygon(), closed=True)], facecolor='red', linewidths=0, alpha=0.4)
+                self.ax.add_collection(self.p)
+                self.fig.canvas.draw()
+                       
     def zoom(self, event):
         
         if not event.inaxes:

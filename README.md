@@ -101,5 +101,5 @@ The green annotation boxes from the network can be edited by pressing on the Key
     poly_editor.py          Contains the class used for modifying the shape of a polygon in edit mode ( when `a` is pressed)
     remove_bars.py          Removes any black bars that are formed during video recording by working on the extracted frames.
     segment.py              Read the instructions above.
-    test_*.py               Unit tests for every task.
+    test_*.py               Unit tests.
     visualize_dataset.py    Visualize the annotations created using the tool.

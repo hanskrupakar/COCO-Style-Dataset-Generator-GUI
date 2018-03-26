@@ -15,7 +15,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image_dir", required=True, help="Path to the image dir")
 args = vars(ap.parse_args())
 
-classes = ['blue_perfume', 'black_perfume', 'double_speedstick', 'blue_speedstick', 'dove_blue', 'dove_perfume', 'dove_pink', 'green_speedstick', 'gear_deo', 'dove_black', 'grey_speedstick', 'choc_blue', 'choc_red', 'choc_yellow', 'black_cup', 'nyu_cup', 'ilny_white', 'ilny_blue', 'ilny_black', 'human']
+classes = ('human', 'coke', 'mountain dew', 'gatorade_yellow', 'gatorade_blue', 'naked_red', 'naked_green', 'naked_yellow', 'green_tea', 'lemon_tea', 'herbal_tea')  
 
 images, anns = [], []
 

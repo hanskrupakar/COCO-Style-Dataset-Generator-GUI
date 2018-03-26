@@ -64,9 +64,9 @@ class COCO_dataset_generator(object):
         
         self.text = ''
         
-        self.axradio = plt.axes([0.05, 0.2, 0.15, 0.5])
+        self.axradio = plt.axes([0.0, 0.2, 0.12, 0.5])
 
-        self.class_names = ('black_backpack', 'nine_west_bag', 'meixuan_brown_handbag', 'sm_bdrew_grey_handbag', 'wine_red_handbag', 'sm_bclarre_blush_crossbody', 'mk_brown_wrislet', 'black_plain_bag', 'lmk_brown_messenger_bag', 'sm_peach_backpack', 'black_ameligalanti', 'white_bag')  
+        self.class_names = ('human', 'coke', 'mountain dew', 'gatorade_yellow', 'gatorade_blue', 'naked_red', 'naked_green', 'naked_yellow', 'green_tea', 'lemon_tea', 'herbal_tea')  
 
         self.radio = RadioButtons(self.axradio, self.class_names)
         self.class_names = ('BG',) + self.class_names
@@ -185,6 +185,7 @@ class COCO_dataset_generator(object):
     def next(self, event):
     
         print (self.img_paths[self.index][:-3]+'txt')
+            
         with open(self.img_paths[self.index][:-3]+'txt', "w") as text_file:
             text_file.write(self.text)
         
@@ -193,9 +194,11 @@ class COCO_dataset_generator(object):
         self.ax.set_yticklabels([])
         self.ax.set_xticklabels([])
         
-        if (self.index<len(self.img_paths)):
+        if (self.index<len(self.img_paths)-1):
             self.index += 1
-    
+        else:
+            exit()
+        
         image = plt.imread(self.img_paths[self.index])
         self.ax.imshow(image, aspect='auto')
         
@@ -238,6 +241,8 @@ class COCO_dataset_generator(object):
             
     def onclick(self, event):
         
+        if not event.inaxes:
+            return
         if not self.axreset.in_axes(event) and not self.axnext.in_axes(event) and not self.axsubmit.in_axes(event) and not self.axradio.in_axes(event) and not self.axprev.in_axes(event):
             if event.button==1:
                 self.points.extend([event.xdata, event.ydata])
@@ -278,15 +283,13 @@ class COCO_dataset_generator(object):
             #print event.x, event.y       
 
     def find_poly_area(self):
-        
         coords = self.points_to_polygon()
-        x, y = coords[0], coords[1]
-        #print (x,y)
-        return 0.5*np.abs(np.dot(x,np.roll(y,1))-np.dot(y,np.roll(x,1))) #shoelace algorithm
+        x, y = coords[:,0], coords[:,1]
+        return (0.5*np.abs(np.dot(x,np.roll(y,1))-np.dot(y,np.roll(x,1))))/2 #shoelace algorithm
     
     def onclick_release(self, event):
         
-        if not event.inaxes:
+        if not event.inaxes or self.axreset.in_axes(event) or self.axnext.in_axes(event) or self.axsubmit.in_axes(event) or self.axradio.in_axes(event) or self.axprev.in_axes(event):
             return
         
         elif self.r_x and np.abs(event.xdata - self.r_x)>10 and np.abs(event.ydata - self.r_y)>10: # 10 pixels limit for rectangle creation    

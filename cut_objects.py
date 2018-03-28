@@ -1,4 +1,6 @@
 import numpy as np
+np.set_printoptions(threshold=np.nan)
+
 import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw
 import json

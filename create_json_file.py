@@ -17,6 +17,7 @@ if __name__=='__main__':
     ap.add_argument("-i", "--image_dir", required=True, help="Path to the image dir")
     ap.add_argument("-o", "--file_path", required=True, help="Path of output file")
     ap.add_argument("-c", "--class_file", required=True, help="Path of file with output classes")
+    ap.add_argument("-t", "--type", required=True, help="Type of the image files")
     args = vars(ap.parse_args())
 
     with open(args['class_file'], 'r') as f:
@@ -24,7 +25,7 @@ if __name__=='__main__':
 
     images, anns = [], []
 
-    for i, f in enumerate(sorted(glob.glob(os.path.join(os.path.abspath(args["image_dir"]), '*.jpg')))):
+    for i, f in enumerate(sorted(glob.glob(os.path.join(os.path.abspath(args["image_dir"]), '*.'+args['type'])))):
         img = cv2.imread(f)
         height, width, _ = img.shape
         dic = {'file_name': f, 'id': i, 'height': height, 'width': width}

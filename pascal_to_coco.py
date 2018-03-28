@@ -9,14 +9,17 @@ encoder.FLOAT_REPR = lambda o: format(o, '.2f')
 
 import cv2
 
-classes = ['black_backpack', 'nine_west_bag', 'meixuan_brown_handbag', 'sm_bdrew_grey_handbag', 'wine_red_handbag', 'sm_bclarre_blush_crossbody', 'mk_brown_wrislet', 'black_plain_bag', 'lmk_brown_messenger_bag', 'sm_peach_backpack', 'black_ameligalanti', 'white_bag']   
-
 if __name__=='__main__':
+	
 
     ap = argparse.ArgumentParser(description='Convert PASCAL VOC format dataset to COCO style dataset')
     ap.add_argument("-d", "--pascal_dir", required=True, help="Path to the PASCAL VOC style dataset")
+    ap.add_argument("-c", "--class_file", required=True, help="Path to the classes in the dataset")
     args = vars(ap.parse_args())
-    
+
+    with open(args['class_file'], 'w') as f:
+	    classes = [x.strip() for x in f.readlines()]   
+
     images, anns = [], []
     ann_index = 0
     

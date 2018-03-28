@@ -145,7 +145,7 @@ class COCO_dataset_generator(object):
             
         self.ax.imshow(image, aspect='auto')
         
-        self.text+=str(self.index)+'\n'+self.img_paths[self.index]+'\n'+str(width)+' '+str(height)+'\n\n'
+        self.text+=str(self.index)+'\n'+os.path.abspath(self.img_paths[self.index])+'\n'+str(width)+' '+str(height)+'\n\n'
     
     def points_to_polygon(self):
         return np.reshape(np.array(self.points), (int(len(self.points)/2), 2))
@@ -208,7 +208,7 @@ class COCO_dataset_generator(object):
         
         self.reset_all()
         
-        self.text+=str(self.index)+'\n'+self.img_paths[self.index]+'\n'+str(width)+' '+str(height)+'\n\n'
+        self.text+=str(self.index)+'\n'+os.path.abspath(self.img_paths[self.index])+'\n'+str(width)+' '+str(height)+'\n\n'
     
     def reset_all(self):
         
@@ -237,7 +237,7 @@ class COCO_dataset_generator(object):
         
         self.reset_all()
         
-        self.text+=str(self.index)+'\n'+self.img_paths[self.index]+'\n'+str(width)+' '+str(height)+'\n\n'
+        self.text+=str(self.index)+'\n'+os.path.abspath(self.img_paths[self.index])+'\n'+str(width)+' '+str(height)+'\n\n'
             
     def onclick(self, event):
         

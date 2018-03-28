@@ -1,0 +1,11 @@
+human
+coke
+mountain dew
+gatorade_yellow
+gatorade_blue
+naked_red
+naked_green
+naked_yellow
+green_tea
+lemon_tea
+herbal_tea

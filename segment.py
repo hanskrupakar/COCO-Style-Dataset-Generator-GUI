@@ -64,9 +64,9 @@ class COCO_dataset_generator(object):
         
         self.text = ''
         
-        self.axradio = plt.axes([0.0, 0.2, 0.12, 0.5])
+        self.axradio = plt.axes([0.0, 0.1, 0.12, 0.8])
 
-        self.class_names = ('human', 'coke', 'mountain dew', 'gatorade_yellow', 'gatorade_blue', 'naked_red', 'naked_green', 'naked_yellow', 'green_tea', 'lemon_tea', 'herbal_tea')  
+        self.class_names = ('pocky_pink', 'pocky_red', 'oreo', 'milan', 'ritz', 'cup_noodles', 'red_noodles', 'black_cracker', 'brown_cracker', 'mints', 'goldfish' , 'orange_packets', 'canada_soda' , 'toiletries', 'men_kit', 'sanitary_pads', 'advil', 'red_bottle', 'blue_bottle', 'orange_bottle', 'white_bottle', 'coke', 'mountain_dew')  
 
         self.radio = RadioButtons(self.axradio, self.class_names)
         self.class_names = ('BG',) + self.class_names

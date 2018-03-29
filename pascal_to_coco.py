@@ -46,5 +46,5 @@ if __name__=='__main__':
 
     data = {'images':images, 'annotations':anns, 'categories':[], 'classes':classes}
 
-    with open('pascal_dataset.json', 'w') as outfile:
+    with open(args['file_name']+'.json', 'w') as outfile:
         json.dump(data, outfile)

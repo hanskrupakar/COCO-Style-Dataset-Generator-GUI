@@ -15,9 +15,10 @@ if __name__=='__main__':
     ap = argparse.ArgumentParser(description='Convert PASCAL VOC format dataset to COCO style dataset')
     ap.add_argument("-d", "--pascal_dir", required=True, help="Path to the PASCAL VOC style dataset")
     ap.add_argument("-c", "--class_file", required=True, help="Path to the classes in the dataset")
+    ap.add_argument("-n", "--file_name", required=True, help="Name of output JSON file")
     args = vars(ap.parse_args())
 
-    with open(args['class_file'], 'w') as f:
+    with open(args['class_file'], 'r') as f:
 	    classes = [x.strip() for x in f.readlines()]   
 
     images, anns = [], []

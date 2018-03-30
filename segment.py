@@ -25,13 +25,13 @@ import sys
 
 class COCO_dataset_generator(object): 
  
-    def __init__(self, fig, ax, img_dir):
+    def __init__(self, fig, ax, args):
         
         self.ax = ax 
         self.ax.set_yticklabels([])
         self.ax.set_xticklabels([])
         
-        self.img_dir = img_dir
+        self.img_dir = args['img_dir']
         self.index = 0
         self.fig = fig
         self.polys = []
@@ -66,8 +66,9 @@ class COCO_dataset_generator(object):
         
         self.axradio = plt.axes([0.0, 0.1, 0.12, 0.8])
 
-        self.class_names = ('pocky_pink', 'pocky_red', 'oreo', 'milan', 'ritz', 'cup_noodles', 'red_noodles', 'black_cracker', 'brown_cracker', 'mints', 'goldfish' , 'orange_packets', 'canada_soda' , 'toiletries', 'men_kit', 'sanitary_pads', 'advil', 'red_bottle', 'blue_bottle', 'orange_bottle', 'white_bottle', 'coke', 'mountain_dew')  
-
+        with open(args['class_file'], 'r') as f:
+            self.class_names = [x.strip() for x in f.readlines()]
+ 
         self.radio = RadioButtons(self.axradio, self.class_names)
         self.class_names = ('BG',) + self.class_names
         
@@ -386,6 +387,7 @@ if __name__=='__main__':
 
     ap = argparse.ArgumentParser()
     ap.add_argument("-i", "--image_dir", required=True, help="Path to the image dir") 
+    ap.add_argument("-c", "--class_file", required=True, help="Path to the classes file of the dataset") 
     ap.add_argument("-f", "--feedback", required=False, help="Whether or not to include AI feedback", action='store_true')
     ap.add_argument('-p', "--maskrcnn_dir", default='/home/hans/Desktop/Vision Internship/Mask_RCNN/', help="Path to Mask RCNN Repo")
     ap.add_argument('-w', "--weights_path", default='/home/hans/Desktop/Vision Internship/Mask_RCNN/logs/imagenet_10/mask_rcnn_bags_0006.h5', help="Path to Mask RCNN checkpoint save file")
@@ -394,7 +396,7 @@ if __name__=='__main__':
     fig = plt.figure(figsize=(14, 14))
     ax = plt.gca()
     
-    gen = COCO_dataset_generator(fig, ax, args["image_dir"])
+    gen = COCO_dataset_generator(fig, ax, args)
     
     plt.subplots_adjust(bottom=0.2)
     plt.show()

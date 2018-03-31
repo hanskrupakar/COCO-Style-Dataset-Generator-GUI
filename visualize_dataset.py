@@ -8,6 +8,33 @@ from matplotlib.collections import PatchCollection
 import glob
 import argparse
 
+def return_info(filename):
+    
+    polys, objects = [], []
+    with open(filename, 'r') as f:
+        txt = f.read().split('\n')
+        
+        index = 6
+        #for index in range(6, len(txt), 4):
+        while (index < len(txt)):
+            #print (txt[index])
+            numbers = txt[index].split(' ') if txt[index].split(' ')[-1]!='' else txt[index].split(' ')[:-1]
+            num = [float(x) for x in numbers]
+            
+            num = np.reshape(np.array(num), (int(len(num)/2), 2))
+            polys.append(num)
+            objects.append(txt[index-2])
+            
+            while index+1<len(txt) and txt[index+1]!='':
+                index+=1
+                numbers = txt[index].split(' ') if txt[index].split(' ')[-1]!='' else txt[index].split(' ')[:-1]
+                
+                num = [float(x) for x in numbers]
+                num = np.reshape(np.array(num), (int(len(num)/2), 2))
+                polys.append(num)
+            index+=4
+    return polys, objects
+
 if __name__=='__main__':
 
     ap = argparse.ArgumentParser()
@@ -23,31 +50,16 @@ if __name__=='__main__':
         fig, ax = plt.subplots()
         ax.set_yticklabels([])
         ax.set_xticklabels([])
-        polys = []
-        with open(f[:-3]+'txt', 'r') as f:
-            txt = f.read().split('\n')
-            
-            index = 6
-            #for index in range(6, len(txt), 4):
-            while (index < len(txt)):
-                #print (txt[index])
-                num = [float(x) for x in txt[index].split(' ')[:-1]]
-                num = np.reshape(np.array(num), (int(len(num)/2), 2))
-                polys.append(Polygon(num, closed=True))
-                
-                while index+1<len(txt) and txt[index+1]!='':
-                    index+=1
-                    num = [float(x) for x in txt[index].split(' ')[:-1]]
-                    num = np.reshape(np.array(num), (int(len(num)/2), 2))
-                    polys.append(Polygon(num, closed=True))
-                index+=4
-                
-            ax.imshow(image)
-            p = PatchCollection(polys, cmap=matplotlib.cm.jet, linewidths=0, alpha=0.5)
-            p.set_array(colors)
-            ax.add_collection(p)
+        
+        polys, objects = return_polys(f[:-3]+'txt')        
+        polys = [Polygon(num, closed=True) for num in polys]
+        
+        ax.imshow(image)
+        p = PatchCollection(polys, cmap=matplotlib.cm.jet, linewidths=0, alpha=0.5)
+        p.set_array(colors)
+        ax.add_collection(p)
 
-            if args['save']:
-                plt.savefig('saved_fig.jpg', bbox_inches='tight')
-            else:
-                plt.show()
+        if args['save']:
+            plt.savefig('saved_fig.jpg', bbox_inches='tight')
+        else:
+            plt.show()

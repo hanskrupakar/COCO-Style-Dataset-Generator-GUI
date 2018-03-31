@@ -22,6 +22,7 @@ from poly_editor import PolygonInteractor
 
 from matplotlib.mlab import dist_point_to_segment
 import sys
+from visualize_dataset import return_info
 
 class COCO_dataset_generator(object): 
  
@@ -31,7 +32,7 @@ class COCO_dataset_generator(object):
         self.ax.set_yticklabels([])
         self.ax.set_xticklabels([])
         
-        self.img_dir = args['img_dir']
+        self.img_dir = args['image_dir']
         self.index = 0
         self.fig = fig
         self.polys = []
@@ -42,10 +43,13 @@ class COCO_dataset_generator(object):
         self.clickrel_id = fig.canvas.mpl_connect('button_release_event', self.onclick_release)
         self.keyboard_id = fig.canvas.mpl_connect('key_press_event', self.onkeyboard)
         
+        self.axbringprev = plt.axes([0.3, 0.05, 0.17, 0.05])
         self.axreset = plt.axes([0.48, 0.05, 0.1, 0.05])
         self.axsubmit = plt.axes([0.59, 0.05, 0.1, 0.05])
         self.axprev = plt.axes([0.7, 0.05, 0.1, 0.05])
         self.axnext = plt.axes([0.81, 0.05, 0.1, 0.05])
+        self.b_bringprev = Button(self.axbringprev, 'BRING PREVIOUS ANNOTATIONS')
+        self.b_bringprev.on_clicked(self.bring_prev)
         self.b_reset = Button(self.axreset, 'Reset')
         self.b_reset.on_clicked(self.reset)
         self.b_submit = Button(self.axsubmit, 'Submit')
@@ -55,10 +59,13 @@ class COCO_dataset_generator(object):
         self.b_prev = Button(self.axprev, 'Prev')
         self.b_prev.on_clicked(self.previous)
         
+        self.button_axes = [self.axbringprev, self.axreset, self.axsubmit, self.axprev, self.axnext]
+
         self.existing_polys = []
         self.existing_patches = []
         self.selected_poly = False
         self.objects = []
+        self.feedback = args['feedback']
         
         self.right_click = False
         
@@ -70,7 +77,7 @@ class COCO_dataset_generator(object):
             self.class_names = [x.strip() for x in f.readlines()]
  
         self.radio = RadioButtons(self.axradio, self.class_names)
-        self.class_names = ('BG',) + self.class_names
+        self.class_names = ('BG',) + tuple(self.class_names)
         
         self.img_paths = sorted(glob.glob(os.path.join(self.img_dir, '*.jpg')))
         
@@ -148,6 +155,19 @@ class COCO_dataset_generator(object):
         
         self.text+=str(self.index)+'\n'+os.path.abspath(self.img_paths[self.index])+'\n'+str(width)+' '+str(height)+'\n\n'
     
+    def bring_prev(self, event):
+
+        if not self.feedback:
+
+            poly_verts, self.objects = return_info(self.img_paths[self.index-1][:-3]+'txt')
+
+            for num in poly_verts:
+                self.existing_polys.append(Polygon(num, closed=True, alpha=0.5, facecolor='red'))
+
+                pat = PatchCollection([Polygon(num, closed=True)], facecolor='green', linewidths=0, alpha=0.6) 
+                self.ax.add_collection(pat)  
+                self.existing_patches.append(pat)   
+
     def points_to_polygon(self):
         return np.reshape(np.array(self.points), (int(len(self.points)/2), 2))
 
@@ -172,7 +192,9 @@ class COCO_dataset_generator(object):
                 self.polygon.color = (255,0,0)
             else:  
                 for i, poly in enumerate(self.existing_polys):
+                    
                     if poly.get_path().contains_point((event.xdata, event.ydata)):
+                        
                         self.radio.set_active(self.class_names.index(self.objects[i])-1)
                         self.polygon = self.existing_polys[i]
                         self.existing_patches[i].set_visible(False)
@@ -182,6 +204,18 @@ class COCO_dataset_generator(object):
                         self.interactor = PolygonInteractor(self.ax, self.polygon)
                         self.selected_poly = True
                         self.existing_polys.pop(i)
+                        break
+
+        elif event.key == 'd':
+
+            for i, poly in enumerate(self.existing_polys):
+                if poly.get_path().contains_point((event.xdata, event.ydata)):
+                    self.existing_patches[i].set_visible(False)
+                    self.existing_patches[i].remove()
+                    self.existing_patches.pop(i)
+                    self.existing_polys.pop(i)
+                    break
+        self.fig.canvas.draw()
 
     def next(self, event):
     
@@ -244,7 +278,7 @@ class COCO_dataset_generator(object):
         
         if not event.inaxes:
             return
-        if not self.axreset.in_axes(event) and not self.axnext.in_axes(event) and not self.axsubmit.in_axes(event) and not self.axradio.in_axes(event) and not self.axprev.in_axes(event):
+        if not any([x.in_axes(event) for x in self.button_axes]):
             if event.button==1:
                 self.points.extend([event.xdata, event.ydata])
                 #print (event.xdata, event.ydata)
@@ -290,7 +324,7 @@ class COCO_dataset_generator(object):
     
     def onclick_release(self, event):
         
-        if not event.inaxes or self.axreset.in_axes(event) or self.axnext.in_axes(event) or self.axsubmit.in_axes(event) or self.axradio.in_axes(event) or self.axprev.in_axes(event):
+        if any([x.in_axes(event) for x in self.button_axes]):
             return
         
         elif self.r_x and np.abs(event.xdata - self.r_x)>10 and np.abs(event.ydata - self.r_y)>10: # 10 pixels limit for rectangle creation    

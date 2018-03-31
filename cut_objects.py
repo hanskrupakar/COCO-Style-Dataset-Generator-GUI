@@ -113,7 +113,7 @@ class Occlusion_Generator_Bbox(object):
                     x, y = contours[0][:,0], contours[0][:,1]
                     area = (0.5*np.abs(np.dot(x,np.roll(y,1))-np.dot(y,np.roll(x,1))))/2 #shoelace algorithm
                     
-                    self.text += self.classes[c1]+'\n'+'%.2f'%area+'\n'+np.array2string(contours[0].flatten(), formatter={'float_kind':lambda x: "%.2f" % x})[1:-1]+'\n\n'
+                    self.text += self.classes[c1]+'\n'+'%.2f'%area+'\n'+np.array2string(contours[0].flatten(), max_line_width=np.inf, formatter={'float_kind':lambda x: "%.2f" % x})[1:-1]+'\n\n'
 
                     done_flag=True
                     

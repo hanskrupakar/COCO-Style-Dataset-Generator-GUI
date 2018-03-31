@@ -82,12 +82,15 @@ In this demo, all the green patches over the objects are the rough masks generat
     Scroll Down     Zoom out of image
     Right Click     Create a point for a polygon mask around an object
     Left Click      Complete the polygon currently formed by connecting all selected points
-    Left Click Drag Create a bounding box rectangle from point 1 to point 2 (works only when there are no polygon points on screen for particular object)    
+    Left Click Drag Create a bounding box rectangle from point 1 to point 2 (works only when there are no polygon points on screen for particular object)  
+      'a'           Press key on top of overlayed polygon (from Mask RCNN or previous annotations) to select it for editing
+      'r'           Press key on top of overlayed polygon (from Mask RCNN or previous annotations) to completely remove it   
     
-    SUBMIT          To be clicked after Right click completes polygon! Finalizes current segmentation mask and class label picked. After this, the polygon cannot be edited.
-    NEXT            Save all annotations created for current file and move on to next image
-    PREV            Goto previous image to re-annotate it. This deletes the annotations created for the file before the current one in order to rewrite the fresh annotations.
-    RESET           If when drawing the polygon using points, the polygon doesn't cover the object properly, reset will let you start fresh with the current polygon. This deletes all the points on the image.
+    BRING PREVIOUS ANNOTATIONS  Bring back the annotations from the previous image to preserve similar annotations.
+    SUBMIT                      To be clicked after Right click completes polygon! Finalizes current segmentation mask and class label picked. After this, the polygon cannot be edited.
+    NEXT                        Save all annotations created for current file and move on to next image.
+    PREV                        Goto previous image to re-annotate it. This deletes the annotations created for the file before the current one in order to rewrite the fresh annotations.
+    RESET                       If when drawing the polygon using points, the polygon doesn't cover the object properly, reset will let you start fresh with the current polygon. This deletes all the points on the image.
 
 The green annotation boxes from the network can be edited by pressing on the Keyboard key `a` when the mouse pointer is on top of a particular such mask. Once you press `a`, the points making up that polygon will show up and you can then edit it using the key bindings specified. Because of the nature of the polygon points being so close to each other, it's easier to delete all the cluttered points at some place of deformation and simply dragging points around to make the image. I suggest not using the insert vertex option `i` as deleting and dragging is just faster. Once you're done editing the polygon, press `a` again to finalize the edits. At this point, it will become possible to submit that particular annotation and move on to the next one.
 
@@ -95,6 +98,7 @@ The green annotation boxes from the network can be edited by pressing on the Key
 
         FILE                            FUNCTIONALITY
 
+    cut_objects.py          Cuts objects based on bounding box annotations using dataset.json file and creates occlusion-based augmented images dataset.
     create_json_file.py     Takes a directory of annotated images (use segment.py to annotate into text files) and returns a COCO-style JSON file.
     extract_frames.py       Takes a directory of videos and extracts all the frames of all videos into a folder labeled adequately by the video name.
     pascal_to_coco.py       Takes a PASCAL-style dataset directory with JPEGImages/ and Annotations/ folders and uses the bounding box as masks to create a COCO-style JSON file

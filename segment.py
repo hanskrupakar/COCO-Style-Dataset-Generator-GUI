@@ -206,7 +206,7 @@ class COCO_dataset_generator(object):
                         self.existing_polys.pop(i)
                         break
 
-        elif event.key == 'd':
+        elif event.key == 'r':
 
             for i, poly in enumerate(self.existing_polys):
                 if poly.get_path().contains_point((event.xdata, event.ydata)):

@@ -48,7 +48,7 @@ class COCO_dataset_generator(object):
         self.axsubmit = plt.axes([0.59, 0.05, 0.1, 0.05])
         self.axprev = plt.axes([0.7, 0.05, 0.1, 0.05])
         self.axnext = plt.axes([0.81, 0.05, 0.1, 0.05])
-        self.b_bringprev = Button(self.axbringprev, 'BRING PREVIOUS ANNOTATIONS')
+        self.b_bringprev = Button(self.axbringprev, 'Bring Previous Annotations')
         self.b_bringprev.on_clicked(self.bring_prev)
         self.b_reset = Button(self.axreset, 'Reset')
         self.b_reset.on_clicked(self.reset)

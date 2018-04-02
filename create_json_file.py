@@ -22,7 +22,7 @@ if __name__=='__main__':
 
     with open(args['class_file'], 'r') as f:
         classes = [x.strip() for x in f.readlines()]
-
+        
     images, anns = [], []
 
     for i, f in enumerate(sorted(glob.glob(os.path.join(os.path.abspath(args["image_dir"]), '*.'+args['type'])))):

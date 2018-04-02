@@ -51,7 +51,7 @@ if __name__=='__main__':
         ax.set_yticklabels([])
         ax.set_xticklabels([])
         
-        polys, objects = return_polys(f[:-3]+'txt')        
+        polys, objects = return_info(f[:-3]+'txt')        
         polys = [Polygon(num, closed=True) for num in polys]
         
         ax.imshow(image)

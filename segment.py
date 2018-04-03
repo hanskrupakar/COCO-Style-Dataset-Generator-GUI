@@ -189,7 +189,8 @@ class COCO_dataset_generator(object):
                 self.right_click = True
                 self.selected_poly = False
                 self.fig.canvas.mpl_connect(self.click_id, self.onclick)
-                self.polygon.color = (255,0,0)
+                self.polygon.color = (0,255,0)
+                self.fig.canvas.draw()
             else:  
                 for i, poly in enumerate(self.existing_polys):
                     
@@ -324,7 +325,7 @@ class COCO_dataset_generator(object):
     
     def onclick_release(self, event):
         
-        if any([x.in_axes(event) for x in self.button_axes]):
+        if any([x.in_axes(event) for x in self.button_axes]) or self.selected_poly:
             return
         
         elif self.r_x and np.abs(event.xdata - self.r_x)>10 and np.abs(event.ydata - self.r_y)>10: # 10 pixels limit for rectangle creation    

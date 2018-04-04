@@ -42,18 +42,21 @@ if __name__=='__main__':
     ap.add_argument("-s", "--save", help="save instance of annotated image", action='store_true') 
     args = vars(ap.parse_args())
     
-    colors = 100*np.random.random(20)
+    images = [x for x in glob.glob(os.path.join(args['image_dir'], '*.jpg')) if os.path.exists(x[:-3]+'txt')]
     
-    for f in glob.glob(os.path.join(args['image_dir'], '*.jpg')):
+    print (images)
     
-        image = plt.imread(f)
+    for f in images:
+    
         fig, ax = plt.subplots()
+        colors = 100*np.random.random(20)
+        image = plt.imread(f)
         ax.set_yticklabels([])
         ax.set_xticklabels([])
         
         polys, objects = return_info(f[:-3]+'txt')        
         polys = [Polygon(num, closed=True) for num in polys]
-        
+    
         ax.imshow(image)
         p = PatchCollection(polys, cmap=matplotlib.cm.jet, linewidths=0, alpha=0.5)
         p.set_array(colors)

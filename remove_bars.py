@@ -16,6 +16,6 @@ if __name__=='__main__':
         args = ap.parse_args()
 
         for f in glob.glob(os.path.join(args.images_dir, '*')):
-                im = Image.open(f)
-                im = trim(im)
-                im.save(f)
+            im = Image.open(f)
+            im = trim(im)
+            im.save(f)

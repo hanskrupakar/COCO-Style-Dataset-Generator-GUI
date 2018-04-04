@@ -71,7 +71,7 @@ class COCO_dataset_generator(object):
         
         self.text = ''
         
-        self.axradio = plt.axes([0.0, 0.1, 0.12, 0.8])
+        self.axradio = plt.axes([0.0, 0.0, 0.2, 1])
 
         with open(args['class_file'], 'r') as f:
             self.class_names = [x.strip() for x in f.readlines()]

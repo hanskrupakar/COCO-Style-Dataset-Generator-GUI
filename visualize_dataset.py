@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
+from PIL import Image
 import glob
 import argparse
 
@@ -43,8 +44,6 @@ if __name__=='__main__':
     args = vars(ap.parse_args())
     
     images = [x for x in glob.glob(os.path.join(args['image_dir'], '*.jpg')) if os.path.exists(x[:-3]+'txt')]
-    
-    print (images)
     
     for f in images:
     

@@ -36,7 +36,9 @@ First download the Mask RCNN repo in the same parent directory of COCO-Style-Dat
 git clone https://github.com/Deep-Magic/Mask_RCNN.git
 ```
 
-To run the particular model for the demo, download the pretrained weights from [HERE!!!](https://drive.google.com/file/d/1S-Wc-tmLDPbtlfje0p9bId20fPHGQNRe/view?usp=sharing). Download and extract pretrained_weights/ into the repository.
+To run the particular model for the demo, download the pretrained weights from [HERE!!!](https://drive.google.com/file/d/1S-Wc-tmLDPbtlfje0p9bId20fPHGQNRe/view?usp=sharing). Download and extract pretrained_weights/ into the repository. 
+
+Then, in a separate text file, list the target labels/classes line-by-line to be displayed along with the dataset for class labels. For example, look at [classes/products.txt](https://github.com/Deep-Magic/COCO-Style-Dataset-Generator-GUI/blob/master/classes/products.txt)
 
 ```
 python3 segment.py -i images -f -p ../Mask_RCNN/ -w pretrained_weights/imagenet_10/mask_rcnn_bags_0006.h5 -c classes/products.txt 

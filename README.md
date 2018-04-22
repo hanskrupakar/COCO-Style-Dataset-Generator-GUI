@@ -25,7 +25,7 @@ git clone https://github.com/Deep-Magic/COCO-Style-Dataset-Generator-GUI.git
 
 ```
 cd COCO-Style-Dataset-Generator-GUI/
-python3 segment.py -i images/
+python3 segment.py -i images/ -c classes/products.txt
 ```
 
 #### Running the segmentation GUI augmented by initial Mask RCNN pretrained model predictions:

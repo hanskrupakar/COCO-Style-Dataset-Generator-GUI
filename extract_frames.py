@@ -30,7 +30,7 @@ if __name__=='__main__':
             i+=1
             
             if args.rotation is not None:
-                frame = imutils.rotate(frame, int(args.rotation))
+                frame = imutils.rotate_bound(frame, int(args.rotation))
             
             if os.path.exists(os.path.join(*[args.frames_dir, f.split('/')[-1][:-4], f.split('/')[-1][:-4]+'_%d.jpg'%(i)])):
                 continue

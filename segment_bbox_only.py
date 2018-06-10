@@ -68,7 +68,7 @@ class COCO_dataset_generator(object):
         
         #self.classes, self.img_paths, _ = read_JSON_file(json_file)
         with open(classes, 'r') as f:
-            self.classes, img_paths = [x.strip().split(',')[0] for x in f.readlines()], glob.glob(os.path.abspath(os.path.join(img_dir, '*.jpg')))
+            self.classes, img_paths = sorted([x.strip().split(',')[0] for x in f.readlines()]), glob.glob(os.path.abspath(os.path.join(img_dir, '*.jpg')))
         plt.tight_layout()
 
         self.ax = ax
@@ -83,6 +83,7 @@ class COCO_dataset_generator(object):
         self.b_save = Button(self.axsave, 'Save')
         self.b_save.on_clicked(self.save)        
         self.objects, self.existing_patches, self.existing_rects = [], [], []
+        self.num_pred = 0
         if json_file is None:
             self.images, self.annotations = [], [] 
             self.index = 0
@@ -93,17 +94,22 @@ class COCO_dataset_generator(object):
             self.images, self.annotations = d['images'], d['annotations']
             self.index = len(self.images)
             self.ann_id = len(self.annotations)
+        print (self.index)
+        prev_files = [x['file_name'] for x in self.images]
         for i, f in enumerate(img_paths):
             im = Image.open(f)
-            width, height = im.size 
-            self.images.append({'file_name': f, 'id': self.index+i, 'height': height, 'width': width})
+            width, height = im.size
+            dic = {'file_name': f, 'id': self.index+i, 'height': height, 'width': width} 
+            if f not in prev_files:
+                self.images.append(dic)
+            else:
+                self.index+=1
         image = plt.imread(self.images[self.index]['file_name'])
         self.ax.imshow(image, aspect='auto')
         
         sys.path.append(args['maskrcnn_dir'])
         from config import Config
         import model as modellib
-        from coco import BagsConfig
         from skimage.measure import find_contours
         from visualize_cv2 import random_colors
         
@@ -113,17 +119,17 @@ class COCO_dataset_generator(object):
             IMAGES_PER_GPU = 1
             NUM_CLASSES = 22 + 1
             IMAGE_SHAPE = np.array([Config.IMAGE_MIN_DIM, Config.IMAGE_MIN_DIM, 3])
-        config = InstanceConfig()
+        self.config = InstanceConfig()
         
         plt.connect('draw_event', self.persist)
         
         # Create model object in inference mode.
-        model = modellib.MaskRCNN(mode="inference", model_dir='/'.join(args['weights_path'].split('/')[:-2]), config=config)
+        self.model = modellib.MaskRCNN(mode="inference", model_dir='/'.join(args['weights_path'].split('/')[:-2]), config=self.config)
 
         # Load weights trained on MS-COCO
-        model.load_weights(args['weights_path'], by_name=True)
+        self.model.load_weights(args['weights_path'], by_name=True)
         
-        r = model.detect([image], verbose=0)[0]
+        r = self.model.detect([image], verbose=0)[0]
      
         # Number of instances
         N = r['rois'].shape[0]
@@ -134,20 +140,20 @@ class COCO_dataset_generator(object):
         height, width = image.shape[:2]
         
         class_ids, scores, rois = r['class_ids'], r['scores'], r['rois'],
-        
+       
         for i in range(N):
             
             # Label
             class_id = class_ids[i]
             score = scores[i] if scores is not None else None
-            label = self.classes[class_id]
+            label = self.classes[class_id-1]
             pat = patches.Rectangle((rois[i][1], rois[i][0]), rois[i][3]-rois[i][1], rois[i][2]-rois[i][0], linewidth=1, edgecolor='r',facecolor='r', alpha=0.4)
             rect = self.ax.add_patch(pat)
                         
             self.objects.append(label)
             self.existing_patches.append(pat.get_bbox().get_points())
             self.existing_rects.append(pat)
-        
+        self.num_pred = len(self.objects)
     
     def line_select_callback(self, eclick, erelease):
         'eclick and erelease are the press and release events'
@@ -186,8 +192,8 @@ class COCO_dataset_generator(object):
         self.ax.figure.canvas.draw()
 
     def save(self, event):
-        
-        data = {'images':self.images, 'annotations':self.annotations, 'categories':[], 'classes': self.classes}
+        if len(self.objects) == 0:
+            data = {'images':self.images[:self.index+1], 'annotations':self.annotations, 'categories':[], 'classes': self.classes}
 
         with open('output.json', 'w') as outfile:
             json.dump(data, outfile)
@@ -213,6 +219,7 @@ class COCO_dataset_generator(object):
                     self.fig.canvas.draw()
                     self.existing_rects.pop(i)
                     self.existing_patches.pop(i)
+                    self.objects.pop(i)
                     fig.canvas.draw()
                     break
             
@@ -222,7 +229,9 @@ class COCO_dataset_generator(object):
                 poly = [b[0], b[2], b[0], b[3], b[1], b[3], b[1], b[2], b[0], b[2]]
                 area = (b[1]-b[0])*(b[3]-b[2])
                 bbox = [b[0], b[2], b[1], b[3]]
-                self.annotations.append({'segmentation': poly, 'area': area, 'iscrowd':0, 'image_id':self.index, 'bbox':bbox, 'category_id': self.classes.index(self.radio.value_selected)+1, 'id': self.ann_id})
+                dic2 = {'segmentation': poly, 'area': area, 'iscrowd':0, 'image_id':self.index, 'bbox':bbox, 'category_id': self.classes.index(self.radio.value_selected)+1, 'id': self.ann_id}
+                if dic2 not in self.annotations:
+                    self.annotations.append(dic2)
                 self.ann_id+=1
                 rect = patches.Rectangle((b[0],b[2]),b[1]-b[0],b[3]-b[2],linewidth=1,edgecolor='g',facecolor='g', alpha=0.4)
                 self.ax.add_patch(rect)
@@ -234,12 +243,44 @@ class COCO_dataset_generator(object):
         elif event.key in ['N', 'n']:
             self.ax.clear()
             self.index+=1
+            if (len(self.objects)==self.num_pred):
+                self.images.pop(self.index-1)
+                self.index-=1
+            print(self.index)
+            print (self.images)
             if self.index==len(self.images):
                 exit()
-            img = plt.imread(self.images[self.index]['file_name'])
-            self.ax.imshow(img)
+            image = plt.imread(self.images[self.index]['file_name'])
+            self.ax.imshow(image)
             self.ax.set_yticklabels([])
             self.ax.set_xticklabels([])
+            r = self.model.detect([image], verbose=0)[0]
+     
+            # Number of instances
+            N = r['rois'].shape[0]
+        
+            masks = r['masks']
+        
+            # Show area outside image boundaries.
+            height, width = image.shape[:2]
+        
+            class_ids, scores, rois = r['class_ids'], r['scores'], r['rois'],
+            self.existing_rects, self.existing_patches, self.objects = [], [], []
+            for i in range(N):
+                
+                # Label
+                class_id = class_ids[i]
+                score = scores[i] if scores is not None else None
+                label = self.classes[class_id-1]
+                pat = patches.Rectangle((rois[i][1], rois[i][0]), rois[i][3]-rois[i][1], rois[i][2]-rois[i][0], linewidth=1, edgecolor='r',facecolor='r', alpha=0.4)
+                rect = self.ax.add_patch(pat)
+                        
+                self.objects.append(label)
+
+                self.existing_patches.append(pat.get_bbox().get_points())
+                self.existing_rects.append(pat)
+            
+            self.num_pred = len(self.objects)
             self.fig.canvas.draw()
             
         elif event.key in ['q','Q']:

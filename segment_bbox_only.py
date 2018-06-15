@@ -225,6 +225,7 @@ class COCO_dataset_generator(object):
             
         elif event.key == 'i':
             b = self.RS.extents # xmin, xmax, ymin, ymax
+            b = [int(x) for x in b]
             if b[1]-b[0]>0 and b[3]-b[2]>0:
                 poly = [b[0], b[2], b[0], b[3], b[1], b[3], b[1], b[2], b[0], b[2]]
                 area = (b[1]-b[0])*(b[3]-b[2])

@@ -1,1 +1,0 @@
-python segment_bbox_only.py --i ~/CISCODATA_CORRECTED_OVERFIT/20180504/ --c ~/CISCODATA_CORRECTED_OVERFIT/classes.csv --j ~/CISCODATA_CORRECTED_OVERFIT/cisco_new_batch2.json

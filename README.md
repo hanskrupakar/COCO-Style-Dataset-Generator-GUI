@@ -111,5 +111,6 @@ The green annotation boxes from the network can be edited by pressing on the Key
     test_*.py               Unit tests.
     visualize_dataset.py    Visualize the annotations created using the tool.
     visualize_json_file.py  Visualize the dataset JSON file annotations on the entire dataset.
+    compute_dataset_statistics.py   Find distribution of objects in the dataset by counts.
     
 NOTE: Please use `python <FILENAME>.py -h` for details on how to use each of the above files.  

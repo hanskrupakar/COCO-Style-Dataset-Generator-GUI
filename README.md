@@ -8,9 +8,8 @@ This is a simple GUI-based Widget based on matplotlib in Python to facilitate qu
 #### Installing Dependencies:
 
 Before running the code, install required pre-requisite python packages using pip.
-
 ```
-pip install -r requirements.txt
+cat requirements.txt | xargs -n 1 -L 1 pip install
 ```
 
 ### RUN THE SEGMENTOR GUI:
@@ -83,8 +82,8 @@ In this demo, all the green patches over the objects are the rough masks generat
   
     Scroll Up       Zoom into image
     Scroll Down     Zoom out of image
-    Right Click     Create a point for a polygon mask around an object
-    Left Click      Complete the polygon currently formed by connecting all selected points
+    Left Click      Create a point for a polygon mask around an object
+    Right Click     Complete the polygon currently formed by connecting all selected points
     Left Click Drag Create a bounding box rectangle from point 1 to point 2 (works only when there are no polygon points on screen for particular object)  
       'a'           Press key on top of overlayed polygon (from Mask RCNN or previous annotations) to select it for editing
       'r'           Press key on top of overlayed polygon (from Mask RCNN or previous annotations) to completely remove it   

@@ -10,6 +10,8 @@ This is a simple GUI-based Widget based on matplotlib in Python to facilitate qu
 Before running the code, install required pre-requisite python packages using pip.
 
 ```
+pip install Cython
+pip install numpy
 pip install -r requirements.txt
 ```
 

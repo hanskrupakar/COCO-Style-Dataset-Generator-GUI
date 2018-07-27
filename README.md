@@ -82,8 +82,8 @@ In this demo, all the green patches over the objects are the rough masks generat
   
     Scroll Up       Zoom into image
     Scroll Down     Zoom out of image
-    Left Click     Create a point for a polygon mask around an object
-    Right Click      Complete the polygon currently formed by connecting all selected points
+    Left Click      Create a point for a polygon mask around an object
+    Right Click     Complete the polygon currently formed by connecting all selected points
     Left Click Drag Create a bounding box rectangle from point 1 to point 2 (works only when there are no polygon points on screen for particular object)  
       'a'           Press key on top of overlayed polygon (from Mask RCNN or previous annotations) to select it for editing
       'r'           Press key on top of overlayed polygon (from Mask RCNN or previous annotations) to completely remove it   

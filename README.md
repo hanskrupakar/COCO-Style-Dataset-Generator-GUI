@@ -8,11 +8,8 @@ This is a simple GUI-based Widget based on matplotlib in Python to facilitate qu
 #### Installing Dependencies:
 
 Before running the code, install required pre-requisite python packages using pip.
-
 ```
-pip install Cython
-pip install numpy
-pip install -r requirements.txt
+cat requirements.txt | xargs -n 1 -L 1 pip install
 ```
 
 ### RUN THE SEGMENTOR GUI:

@@ -21,24 +21,17 @@ if __name__=='__main__':
         classes = [x.strip() for x in f.readlines()]
         
     images, anns = [], []
-
-    num_imgs = len(glob.glob(os.path.join(args["image_dir"], '*.txt')))
+	
+    img_paths = [x for x in glob.glob(os.path.join(args['image_dir'], '*.'+args['type'])) if os.path.exists(x[:-3]+'txt')]
+	
+    num_imgs = len(img_paths)
     i=0
-    for f in sorted(glob.glob(os.path.join(os.path.abspath(args["image_dir"]), '*.'+args['type']))):
+    for f in sorted(img_paths):
         
-        if ('f.'+args['type'] not in f):
-	        img = Image.open(f)
-	        width, height = img.size
-	        dic = {'file_name': f, 'id': i, 'height': height, 'width': width}
-	        images.append(dic)
-
-	        #Add flipped image 
-	        if (not os.path.exists(f[:-4]+'f.'+args['type']) and 'f.'+args['type'] not in f):
-	            f_img = img.transpose(Image.FLIP_LEFT_RIGHT)
-	            f_img.save(f[:-4]+'f.jpg')
-	        dic = {'file_name': f[:-4]+'f.jpg', 'id': num_imgs+i, 'height': height, 'width': width}
-	        images.append(dic)
-	        i+=1
+        img = Image.open(f)
+        width, height = img.size
+        dic = {'file_name': f, 'id': i, 'height': height, 'width': width}
+        images.append(dic)
 
     ann_index = 0
     for i, f in enumerate(sorted(glob.glob(os.path.join(os.path.abspath(args['image_dir']), '*.txt')))):
@@ -87,15 +80,6 @@ if __name__=='__main__':
             ptr+=4
             anns.append(dic2)
           
-            # Add flipped annotations as well to improve training context
-            poly2 = [[round(width-p-1, 2) if i%2==0 else p for i,p in enumerate(polygon)] for polygon in poly]
-            
-            bbox[0] = round(width - bbox[0] - 1, 2)
-            bbox[2] = round(width - bbox[2] - 1, 2)
-            dic2 = {'segmentation': poly2, 'area': area, 'iscrowd':0, 'image_id':num_imgs+i, 'bbox':bbox, 'category_id': cat_id, 'id': ann_index}
-            ann_index+=1
-            anns.append(dic2)
-
     data = {'images':images, 'annotations':anns, 'categories':[], 'classes': classes}
 
     with open(args['file_path']+'.json', 'w') as outfile:

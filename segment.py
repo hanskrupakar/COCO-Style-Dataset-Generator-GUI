@@ -219,11 +219,13 @@ class COCO_dataset_generator(object):
         self.fig.canvas.draw()
 
     def next(self, event):
-    
-        print (self.img_paths[self.index][:-3]+'txt')
+        
+        if len(self.text.split('\n'))>5:
             
-        with open(self.img_paths[self.index][:-3]+'txt', "w") as text_file:
-            text_file.write(self.text)
+            print (self.img_paths[self.index][:-3]+'txt')
+            
+            with open(self.img_paths[self.index][:-3]+'txt', "w") as text_file:
+                text_file.write(self.text)
         
         self.ax.clear()
         

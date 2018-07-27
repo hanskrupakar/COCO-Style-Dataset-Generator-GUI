@@ -43,6 +43,7 @@ class COCO_dataset_generator(object):
         self.clickrel_id = fig.canvas.mpl_connect('button_release_event', self.onclick_release)
         self.keyboard_id = fig.canvas.mpl_connect('key_press_event', self.onkeyboard)
         
+        self.axradio = plt.axes([0.0, 0.0, 0.2, 1])
         self.axbringprev = plt.axes([0.3, 0.05, 0.17, 0.05])
         self.axreset = plt.axes([0.48, 0.05, 0.1, 0.05])
         self.axsubmit = plt.axes([0.59, 0.05, 0.1, 0.05])
@@ -59,7 +60,7 @@ class COCO_dataset_generator(object):
         self.b_prev = Button(self.axprev, 'Prev')
         self.b_prev.on_clicked(self.previous)
         
-        self.button_axes = [self.axbringprev, self.axreset, self.axsubmit, self.axprev, self.axnext]
+        self.button_axes = [self.axbringprev, self.axreset, self.axsubmit, self.axprev, self.axnext, self.axradio]
 
         self.existing_polys = []
         self.existing_patches = []
@@ -71,8 +72,6 @@ class COCO_dataset_generator(object):
         
         self.text = ''
         
-        self.axradio = plt.axes([0.0, 0.0, 0.2, 1])
-
         with open(args['class_file'], 'r') as f:
             self.class_names = [x.strip() for x in f.readlines()]
  

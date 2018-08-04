@@ -17,13 +17,11 @@ if __name__=='__main__':
     classes = obj["classes"]
     
     for img in images:
-        anns = [ann for ann in obj["annotations"] if ann["image_id"]==img["id"]]
-        print (anns)
-        print (img["file_name"])
+        anns = [ann for ann in annotations if ann["image_id"]==img["id"]]
         image_cv2 = cv2.imread(img["file_name"])
         for ann in anns:
             s = [int(x) for x in ann['bbox']]
             cv2.rectangle(image_cv2, (s[0], s[1]), (s[2], s[3]), (0,0,0), 2)
             cv2.putText(image_cv2, classes[ann['category_id']-1], (s[0]-10, s[1]+10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
-            cv2.imshow('frame', image_cv2)
-            cv2.waitKey()
+        cv2.imshow('frame', image_cv2)
+        cv2.waitKey()

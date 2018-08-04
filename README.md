@@ -110,7 +110,7 @@ The green annotation boxes from the network can be edited by pressing on the Key
     visualize_dataset.py            Visualize the annotations created using the tool.
     visualize_json_file.py          Visualize the dataset JSON file annotations on the entire dataset.
     compute_dataset_statistics.py   Find distribution of objects in the dataset by counts.
-    combine_json_files.py   Combine (and squeeze deleted image and annotation IDs if delete_images was used in) JSON files together into a single dataset file.
+    combine_json_files.py           Combine (and squeeze deleted image and annotation IDs if delete_images was used in) JSON files together into a single dataset file.
     delete_images.py                Delete necessary images from the JSON dataset.
     
 NOTE: Please use `python <FILENAME>.py -h` for details on how to use each of the above files.  

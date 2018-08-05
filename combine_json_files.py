@@ -31,29 +31,6 @@ if __name__=='__main__':
         with open(file_path, 'r') as f:
             obj = json.load(f)
         
-        # Account for deletions by changing label space
-        
-        id_list = [int(img['id']) for img in obj['images']]
-        ann_list = [int(ann['id']) for ann in obj['annotations']]
-        
-        full_img, full_ann = [x for x in range(len(id_list))], [x for x in range(len(ann_list))]
-        
-        free_img, free_ann = list(set(full_img)-set(id_list)), list(set(full_ann)-set(ann_list))
-        change_img, change_ann = list(set(id_list)-set(full_img)), list(set(ann_list)-set(full_ann))
-        
-        for f, c in zip(free_img, change_img):
-            for img in obj['images']:
-                if img['id']==c:
-                    img['id']=f
-            for ann in obj['annotations']:
-                if ann['image_id']==c:
-                    ann['image_id']=f
-        
-        for f, c in zip(free_ann, change_ann):
-            for ann in obj['annotations']:
-                if ann['id']==c:
-                    ann['id']=f
-        
         for img in obj["images"]:
             img["id"] += img_counter
         

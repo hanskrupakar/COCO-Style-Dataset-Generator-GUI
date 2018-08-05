@@ -17,6 +17,30 @@ def press(event):
             
     if event.key.lower() == 'j':
         print ("Saving dataset to file! Please wait!")
+        
+        # Account for deletions by changing label space
+        
+        id_list = [int(img['id']) for img in new_imgs]
+        ann_list = [int(ann['id']) for ann in new_anns]
+        
+        full_img, full_ann = [x for x in range(len(id_list))], [x for x in range(len(ann_list))]
+        
+        free_img, free_ann = list(set(full_img)-set(id_list)), list(set(full_ann)-set(ann_list))
+        change_img, change_ann = list(set(id_list)-set(full_img)), list(set(ann_list)-set(full_ann))
+        
+        for f, c in zip(free_img, change_img):
+            for img in new_imgs:
+                if img['id']==c:
+                    img['id']=f
+            for ann in new_anns:
+                if ann['image_id']==c:
+                    ann['image_id']=f
+        
+        for f, c in zip(free_ann, change_ann):
+            for ann in new_anns:
+                if ann['id']==c:
+                    ann['id']=f
+        
         data = {'images': new_imgs, 'annotations': new_anns, 'categories':[], 'classes':classes}
         with open('deleted_dataset.json', 'w') as f:
             json.dump(data, f)

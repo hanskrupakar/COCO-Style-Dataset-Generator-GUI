@@ -295,7 +295,7 @@ if __name__=='__main__':
     ap.add_argument("-c", "--classes_file", required=True, help="Path to classes file") 
     ap.add_argument("-j", "--json_file", required=False, help="Path of JSON file to append dataset to", default=None)
     ap.add_argument("--save_csv", required=False, action="store_true", help="Choose option to save dataset as CSV file annotations.csv")
-    ap.add_argument("-n", "--no_feedback", required=False, help="Whether or not to include AI feedback", action='store_false', default=True)
+    ap.add_argument("-n", "--no_feedback", required=False, help="Whether or not to include AI feedback", action='store_true')
     ap.add_argument('-p', "--maskrcnn_dir", default='/home/hans/Desktop/Vision Internship/Mask_RCNN/', help="Path to Mask RCNN Repo")
     ap.add_argument('-w', "--weights_path", default='/home/hans/Desktop/Vision Internship/Mask_RCNN/logs/mask_rcnn_overfit3.h5', help="Path to Mask RCNN checkpoint save file")
     args = vars(ap.parse_args())

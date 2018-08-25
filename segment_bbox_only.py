@@ -106,54 +106,55 @@ class COCO_dataset_generator(object):
                 self.index+=1
         image = plt.imread(self.images[self.index]['file_name'])
         self.ax.imshow(image, aspect='auto')
-        
-        sys.path.append(args['maskrcnn_dir'])
-        from config import Config
-        import model as modellib
-        from skimage.measure import find_contours
-        from visualize_cv2 import random_colors
-        
-        class InstanceConfig(Config):
-            NAME = os.path.basename(model_path)
-            GPU_COUNT = 1
-            IMAGES_PER_GPU = 1
-            NUM_CLASSES = 22 + 1
-            IMAGE_SHAPE = np.array([Config.IMAGE_MIN_DIM, Config.IMAGE_MIN_DIM, 3])
-        self.config = InstanceConfig()
-        
-        plt.connect('draw_event', self.persist)
-        
-        # Create model object in inference mode.
-        self.model = modellib.MaskRCNN(mode="inference", model_dir='/'.join(args['weights_path'].split('/')[:-2]), config=self.config)
 
-        # Load weights trained on MS-COCO
-        self.model.load_weights(args['weights_path'], by_name=True)
+        if not args['no_feedback']:
+            sys.path.append(args['maskrcnn_dir'])
+            from config import Config
+            import model as modellib
+            from skimage.measure import find_contours
+            from visualize_cv2 import random_colors
         
-        r = self.model.detect([image], verbose=0)[0]
+            class InstanceConfig(Config):
+                NAME = os.path.basename(model_path)
+                GPU_COUNT = 1
+                IMAGES_PER_GPU = 1
+                NUM_CLASSES = 22 + 1
+                IMAGE_SHAPE = np.array([Config.IMAGE_MIN_DIM, Config.IMAGE_MIN_DIM, 3])
+            self.config = InstanceConfig()
+        
+            plt.connect('draw_event', self.persist)
+        
+            # Create model object in inference mode.
+            self.model = modellib.MaskRCNN(mode="inference", model_dir='/'.join(args['weights_path'].split('/')[:-2]), config=self.config)
+
+            # Load weights trained on MS-COCO
+            self.model.load_weights(args['weights_path'], by_name=True)
+        
+            r = self.model.detect([image], verbose=0)[0]
      
-        # Number of instances
-        N = r['rois'].shape[0]
+            # Number of instances
+            N = r['rois'].shape[0]
         
-        masks = r['masks']
+            masks = r['masks']
         
-        # Show area outside image boundaries.
-        height, width = image.shape[:2]
+            # Show area outside image boundaries.
+            height, width = image.shape[:2]
         
-        class_ids, scores, rois = r['class_ids'], r['scores'], r['rois'],
+            class_ids, scores, rois = r['class_ids'], r['scores'], r['rois'],
        
-        for i in range(N):
+            for i in range(N):
             
-            # Label
-            class_id = class_ids[i]
-            score = scores[i] if scores is not None else None
-            label = self.classes[class_id-1]
-            pat = patches.Rectangle((rois[i][1], rois[i][0]), rois[i][3]-rois[i][1], rois[i][2]-rois[i][0], linewidth=1, edgecolor='r',facecolor='r', alpha=0.4)
-            rect = self.ax.add_patch(pat)
+                # Label
+                class_id = class_ids[i]
+                score = scores[i] if scores is not None else None
+                label = self.classes[class_id-1]
+                pat = patches.Rectangle((rois[i][1], rois[i][0]), rois[i][3]-rois[i][1], rois[i][2]-rois[i][0], linewidth=1, edgecolor='r',facecolor='r', alpha=0.4)
+                rect = self.ax.add_patch(pat)
                         
-            self.objects.append(label)
-            self.existing_patches.append(pat.get_bbox().get_points())
-            self.existing_rects.append(pat)
-        self.num_pred = len(self.objects)
+                self.objects.append(label)
+                self.existing_patches.append(pat.get_bbox().get_points())
+                self.existing_rects.append(pat)
+            self.num_pred = len(self.objects)
     
     def line_select_callback(self, eclick, erelease):
         'eclick and erelease are the press and release events'

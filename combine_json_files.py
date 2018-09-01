@@ -9,6 +9,9 @@ import sys
 import numpy as np
 import argparse
 
+def cleanup_utf8(array):
+    return [x.encode('utf-8').decode('utf-8').strip() for x in array]
+
 if __name__=='__main__':
     
     if len(sys.argv) < 3:
@@ -44,12 +47,15 @@ if __name__=='__main__':
         if len(images)==0:
             images = obj['images']
             annotations = obj['annotations']
-            classes = obj['classes']
+            classes = cleanup_utf8(obj['classes'])
         else:
             images.extend(obj["images"])
             annotations.extend(obj["annotations"])
+            obj['classes'] = cleanup_utf8(obj['classes'])
             if classes != obj["classes"]:
                 print ("Dataset mismatch between the JSON files!")
+                print ([x==y for x,y in zip(classes, obj['classes'])])
+                print (classes, obj['classes'])
                 exit()
         
     with open("merged_json.json", "w") as f:

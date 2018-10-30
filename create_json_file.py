@@ -1,9 +1,11 @@
+#coding: utf8
 import xml.etree.cElementTree as ET
 import glob
 import argparse
 import os
 import numpy as np
 import json
+import unicodedata
 
 from PIL import Image
 from segment import COCO_dataset_generator as cocogen
@@ -18,7 +20,7 @@ if __name__=='__main__':
     args = vars(ap.parse_args())
 
     with open(args['class_file'], 'r') as f:
-        classes = [x.strip() for x in f.readlines()]
+        classes = sorted([unicodedata.normalize('NFKD', x).strip() for x in f.readlines()])
         
     images, anns = [], []
 	
@@ -34,22 +36,24 @@ if __name__=='__main__':
         images.append(dic)
 
     ann_index = 0
+    
     for i, f in enumerate(sorted(glob.glob(os.path.join(os.path.abspath(args['image_dir']), '*.txt')))):
-        
         ptr = 0
-        with open(f, 'r') as g:
+        with open(f, 'r', encoding='utf-8-sig') as g:
             s = g.read()
         s = s.split('\n')[2:-1]
         
         width, height = [int(x) for x in s[0].split(' ')]
         s = s[2:]
-
+        print (s)
         while(ptr<len(s)):
             
-            cat_id = classes.index(s[ptr])+1
+            cat_id = classes.index(s[ptr].encode('utf-8').decode('utf-8-sig'))+1
             area = float(s[ptr+1])
             poly = [[float(x) for x in s[ptr+2].split(' ')[:-1]]]
             
+            print (cat_id, area, poly)
+
             if len(s)>ptr+3 and s[ptr+3] != '':
                 ind = ptr + 3
                 while (ind<len(s) and s[ind]!=''):
@@ -60,7 +64,6 @@ if __name__=='__main__':
             x1, x2, y1, y2 = None, None, None, None
             for p in poly:
                 points = np.reshape(np.array(p), (int(len(p)/2), 2))
-                
                 if x1 is None: 
                     x1, y1 = points.min(0)
                     x2, y2 = points.max(0)

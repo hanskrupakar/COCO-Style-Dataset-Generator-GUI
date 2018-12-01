@@ -12,18 +12,8 @@ import argparse
 def cleanup_utf8(array):
     return [x.encode('utf-8').decode('utf-8').strip() for x in array]
 
-if __name__=='__main__':
-    
-    if len(sys.argv) < 3:
-        print ("Not enough input files to combine into a single dataset file")
-        exit()
-    
-    ap = argparse.ArgumentParser()
-    ap.add_argument('files', nargs='+', help='List of JSON files to combine into single JSON dataset file')
-    args = ap.parse_args()
-    
-    files = args.files
-    
+def merge_json(files, outfile='merged_dataset.json'):
+
     img_counter = 0
     ann_counter = 0
     
@@ -58,6 +48,20 @@ if __name__=='__main__':
                 print (classes, obj['classes'])
                 exit()
         
-    with open("merged_json.json", "w") as f:
+    with open(outfile, "w") as f:
         data = {'images': images, 'annotations':annotations, 'classes': classes, 'categories':[]}
         json.dump(data, f)
+
+if __name__=='__main__':
+    
+    if len(sys.argv) < 3:
+        print ("Not enough input files to combine into a single dataset file")
+        exit()
+    
+    ap = argparse.ArgumentParser()
+    ap.add_argument('files', nargs='+', help='List of JSON files to combine into single JSON dataset file')
+    args = ap.parse_args()
+    
+    merge_json(args.files, 'merged_json.json')
+    
+    

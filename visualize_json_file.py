@@ -5,7 +5,7 @@ import argparse
 if __name__=='__main__':
     
     ap = argparse.ArgumentParser()
-    ap.add_argument('--json_file', required=True, help="Path to the JSON dataset file to visualize")
+    ap.add_argument('json_file', help="Path to the JSON dataset file to visualize")
     args = ap.parse_args()
     
     cv2.namedWindow('frame', cv2.WND_PROP_FULLSCREEN)
@@ -16,6 +16,7 @@ if __name__=='__main__':
     images, annotations = obj["images"], obj["annotations"]
     classes = obj["classes"]
     
+    print ("Dataset contains %d images, %d objects!"%(len(images), len(annotations)))
     for img in images:
         anns = [ann for ann in annotations if ann["image_id"]==img["id"]]
         image_cv2 = cv2.imread(img["file_name"])
@@ -24,4 +25,7 @@ if __name__=='__main__':
             cv2.rectangle(image_cv2, (s[0], s[1]), (s[2], s[3]), (0,0,0), 2)
             cv2.putText(image_cv2, classes[ann['category_id']-1], (s[0]-10, s[1]+10), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
         cv2.imshow('frame', image_cv2)
-        cv2.waitKey()
+        q = cv2.waitKey()
+        
+        if q == 113: # if q == 'q'
+            exit()

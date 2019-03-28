@@ -1,6 +1,8 @@
 # COCO-Style-Dataset-Generator-GUI
 This is a simple GUI-based Widget based on matplotlib in Python to facilitate quick and efficient crowd-sourced generation of annotation masks and bounding boxes using a simple interactive User Interface. Annotation can be in terms of polygon points covering all parts of an object (see instructions in README) or it can simply be a bounding box, for which you click and drag the mouse button. Optionally, one could choose to use a pretrained Mask RCNN model to come up with initial segmentations. This shifts the work load from painstakingly annotating all the objects in every image to altering wrong predictions made by the system which maybe simpler once an efficient model is learnt.
 
+#### Note: This repo only contains code to annotate every object using a single polygon figure. Support for multi-polygon objects and `iscrowd=True` annotations isn't available yet. Feel free to extend the repo as you wish. 
+
 ### REQUIREMENTS:
 
 `Python 3.5+` is required to run the Mask RCNN code. If only the GUI tool is used, `Python2.7` or `Python3.5+` can be used.
@@ -17,7 +19,7 @@ cat requirements.txt | xargs -n 1 -L 1 pip install
 Clone the repo.
 
 ```
-git clone https://github.com/Deep-Magic/COCO-Style-Dataset-Generator-GUI.git
+git clone https://github.com/hanskrupakar/COCO-Style-Dataset-Generator-GUI.git
 ```
 
 #### Running the segmentation GUI without Mask RCNN pretrained predictions:
@@ -32,12 +34,12 @@ python3 segment.py -i images/ -c classes/products.txt
 First download the Mask RCNN repo in the same parent directory of COCO-Style-Dataset-Generator-GUI/.
 
 ```
-git clone https://github.com/Deep-Magic/Mask_RCNN.git
+git clone https://github.com/hanskrupakar/Mask_RCNN.git
 ```
 
 To run the particular model for the demo, download the pretrained weights from [HERE!!!](https://drive.google.com/file/d/1S-Wc-tmLDPbtlfje0p9bId20fPHGQNRe/view?usp=sharing). Download and extract pretrained_weights/ into the repository. 
 
-Then, in a separate text file, list the target labels/classes line-by-line to be displayed along with the dataset for class labels. For example, look at [classes/products.txt](https://github.com/Deep-Magic/COCO-Style-Dataset-Generator-GUI/blob/master/classes/products.txt)
+Then, in a separate text file, list the target labels/classes line-by-line to be displayed along with the dataset for class labels. For example, look at [classes/products.txt](https://github.com/hanskrupakar/COCO-Style-Dataset-Generator-GUI/blob/master/classes/products.txt)
 
 ```
 python3 segment.py -i images -f -p ../Mask_RCNN/ -w pretrained_weights/imagenet_10/mask_rcnn_bags_0006.h5 -c classes/products.txt 

@@ -10,7 +10,7 @@ import numpy as np
 import argparse
 
 def cleanup_utf8(array):
-    return [x.encode('utf-8').decode('utf-8').strip() for x in array]
+    return [x.encode('ascii', errors='ignore').decode('utf-8').strip() for x in array]
 
 def merge_json(files, outfile='merged_dataset.json'):
 

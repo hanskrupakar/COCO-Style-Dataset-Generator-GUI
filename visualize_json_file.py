@@ -9,6 +9,7 @@ if __name__=='__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('json_file', help="Path to the JSON dataset file to visualize")
     ap.add_argument('--save', help='Save a few results to disk to accommodate non-display environments', action='store_true')
+    ap.add_argument('--relpath', action='store_true', help='Absolute vs relative paths in dataset JSON')
     args = ap.parse_args()
     
     '''
@@ -20,13 +21,18 @@ if __name__=='__main__':
     
     images, annotations = obj["images"], obj["annotations"]
     classes = obj["classes"]
-    
+    print (classes)    
     print ("Dataset contains %d images, %d objects!"%(len(images), len(annotations)))
     
     for idx, img in enumerate(images):
-        imgpath = os.path.join(os.path.dirname(args.json_file), img['file_name'])
+        if args.relpath:
+            imgpath = os.path.join(os.path.dirname(args.json_file), img['file_name'])
+        else:
+            imgpath = img['file_name']
+        print (imgpath)
         if os.path.exists(imgpath):
             anns = [ann for ann in annotations if ann["image_id"]==img["id"]]
+            print (len(anns))
             image_cv2 = cv2.imread(imgpath)
             ann_img = image_cv2.copy()
             for ann in anns:
@@ -44,9 +50,10 @@ if __name__=='__main__':
                 q = cv2.waitKey()
             
             else:
+                print ('saving sample!')
                 cv2.imwrite('sample%d.jpg'%(idx), image_cv2)
                 q = 10    
-                if idx > 5:
+                if idx > 25:
                     q = 113
 
             if q == 113: # if q == 'q'

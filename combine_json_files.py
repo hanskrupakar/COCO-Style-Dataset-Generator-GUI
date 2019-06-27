@@ -2,7 +2,7 @@
 USAGE:
 python combine_json_files.py <LIST OF FILES>
 '''
-
+import os
 import json
 import glob
 import sys
@@ -26,7 +26,10 @@ def merge_json(files, outfile='merged_dataset.json'):
         
         for img in obj["images"]:
             img["id"] += img_counter
-        
+            img['file_name'] = os.path.join(
+                                os.path.dirname(file_path),
+                                img['file_name'])
+
         for ann in obj["annotations"]:
             ann["id"] += ann_counter
             ann["image_id"] += img_counter

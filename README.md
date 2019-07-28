@@ -7,13 +7,6 @@ This is a simple GUI-based Widget based on matplotlib in Python to facilitate qu
 
 `Python 3.5+` is required to run the Mask RCNN code. If only the GUI tool is used, `Python2.7` or `Python3.5+` can be used.
 
-#### Installing Dependencies:
-
-Before running the code, install required pre-requisite python packages using pip.
-```
-cat requirements.txt | xargs -n 1 -L 1 pip install
-```
-
 ### RUN THE SEGMENTOR GUI:
 
 Clone the repo.
@@ -22,10 +15,17 @@ Clone the repo.
 git clone https://github.com/hanskrupakar/COCO-Style-Dataset-Generator-GUI.git
 ```
 
+#### Installing Dependencies:
+
+Before running the code, install required pre-requisite python packages using pip.
+```
+cd COCO-Style-Dataset-Generator-GUI/
+cat requirements.txt | xargs -n 1 -L 1 pip install
+```
+
 #### Running the segmentation GUI without Mask RCNN pretrained predictions:
 
 ```
-cd COCO-Style-Dataset-Generator-GUI/
 python3 segment.py -i images/ -c classes/products.txt
 ```
 

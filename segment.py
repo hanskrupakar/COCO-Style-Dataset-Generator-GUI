@@ -4,8 +4,6 @@ from matplotlib.patches import Polygon
 from matplotlib.widgets import RadioButtons
 from matplotlib.path import Path
 
-from skimage.measure import find_contours
-
 from PIL import Image
 import matplotlib
 
@@ -94,14 +92,16 @@ class COCO_dataset_generator(object):
         if args['feedback']:
 
             sys.path.append(args['maskrcnn_dir'])
-            from config import Config
             import model as modellib
             from demo import BagsConfig
-            from skimage.measure import find_contours
+            
+            #from skimage.measure import find_contours
+            from contours import find_contours
+
             from visualize_cv2 import random_colors
-
-            config = BagsConfig()
-
+            
+            config = BagsConfig(len(self.class_names)-2)
+            
             # Create model object in inference mode.
             model = modellib.MaskRCNN(mode="inference", model_dir='/'.join(args['weights_path'].split('/')[:-2]), config=config)
 
@@ -140,6 +140,7 @@ class COCO_dataset_generator(object):
                     (mask.shape[0] + 2, mask.shape[1] + 2), dtype=np.uint8)
                 padded_mask[1:-1, 1:-1] = mask
                 contours = find_contours(padded_mask, 0.5)
+                
                 for verts in contours:
                     # Subtract the padding and flip (y, x) to (x, y)
 

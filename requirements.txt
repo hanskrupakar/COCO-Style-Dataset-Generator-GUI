@@ -37,6 +37,7 @@ scikit-learn==0.19.1
 scipy==1.0.0
 Shapely==1.6.4.post1
 simplegeneric==0.8.1
+simplification
 six==1.11.0
 sklearn==0.0
 tensorflow-gpu==1.4.0

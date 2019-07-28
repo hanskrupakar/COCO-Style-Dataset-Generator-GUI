@@ -11,7 +11,8 @@ import argparse
 import glob
 import os
 import time
-from skimage.measure import find_contours
+#from skimage.measure import find_contours
+from contours import find_contours
 
 class Occlusion_Generator_Bbox(object):
 

@@ -5,8 +5,6 @@ from matplotlib.widgets import RadioButtons
 from matplotlib.path import Path
 import matplotlib.patches as patches
 
-from skimage.measure import find_contours
-
 from PIL import Image
 import matplotlib
 
@@ -111,7 +109,6 @@ class COCO_dataset_generator(object):
             sys.path.append(args['maskrcnn_dir'])
             from config import Config
             import model as modellib
-            from skimage.measure import find_contours
             from visualize_cv2 import random_colors
         
             class InstanceConfig(Config):

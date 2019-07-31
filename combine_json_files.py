@@ -27,17 +27,12 @@ def merge_json(files, outfile='merged_dataset.json', abspath=False):
         
         for img in obj["images"]:
             img["id"] += img_counter
-<<<<<<< HEAD
 
             if not abspath:
-                img['file_name'] = os.path.join(os.path.abspath(os.path.dirname(file_path)), img['file_name'])
-        
-=======
-            img['file_name'] = os.path.join(
-                                os.path.dirname(file_path),
-                                img['file_name'])
-
->>>>>>> 4ce4aa2056b3b0020c831a9a91f753c3a8e0102e
+                img['file_name'] = os.path.join(
+                                        os.path.abspath(os.path.dirname(file_path)), 
+                                        img['file_name'])
+            
         for ann in obj["annotations"]:
             ann["id"] += ann_counter
             ann["image_id"] += img_counter

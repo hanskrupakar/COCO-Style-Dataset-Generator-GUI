@@ -63,7 +63,8 @@ HINT: Use `get_json_config.py` inside `Mask RCNN` to get config file wrt specifi
 
 `USAGE: segment.py [-h] -i IMAGE_DIR -c CLASS_FILE [-w WEIGHTS_PATH] [-x CONFIG_PATH]`
 
-`USAGE: segment_bbox_only.py [-h] -i IMAGE_FILE -c CLASSES_FILE [-j JSON_FILE] [--save_csv] [-w WEIGHTS_PATH] [-x CONFIG_PATH]`
+`USAGE: segment_bbox_only.py [-h] -i IMAGE_FILE -c CLASSES_FILE [-j JSON_FILE] \
+        [--save_csv] [-w WEIGHTS_PATH] [-x CONFIG_PATH]`
 
 ##### Optional Arguments 
 
@@ -119,25 +120,30 @@ In this demo, all the green patches over the objects are the rough masks generat
       'r'           Press key on top of overlayed polygon (from Mask RCNN or 
                     previous annotations) to completely remove it   
     
-    BRING PREVIOUS ANNOTATIONS  Bring back the annotations from the previous image to preserve similar annotations.
+    BRING PREVIOUS ANNOTATIONS  Bring back the annotations from the previous image to preserve 
+                                similar annotations.
     
-    SUBMIT                      To be clicked after Right click completes polygon! Finalizes current segmentation mask 
-                                and class label picked. After this, the polygon cannot be edited.
+    SUBMIT                      To be clicked after Right click completes polygon! Finalizes current 
+                                segmentation mask and class label picked. 
+                                After this, the polygon cannot be edited.
     
     NEXT                        Save all annotations created for current file and move on to next image.
     
-    PREV                        Goto previous image to re-annotate it. This deletes the annotations created for the 
-                                file before the current one in order to rewrite the fresh annotations.
+    PREV                        Goto previous image to re-annotate it. This deletes the annotations 
+                                created for the file before the current one in order to 
+                                rewrite the fresh annotations.
     
-    RESET                       If when drawing the polygon using points, the polygon doesn't cover the object properly, 
-                                reset will let you start fresh with the current polygon. This deletes all the points on the image.
+    RESET                       If when drawing the polygon using points, the polygon doesn't cover the 
+                                object properly, reset will let you start fresh with the current polygon. 
+                                This deletes all the points on the image.
 
 The green annotation boxes from the network can be edited by pressing on the Keyboard key `a` when the mouse pointer is on top of a particular such mask. Once you press `a`, the points making up that polygon will show up and you can then edit it using the key bindings specified. Once you're done editing the polygon, press `a` again to finalize the edits. At this point, it will become possible to submit that particular annotation and move on to the next one.
 
 Once the GUI tool has been used successfully and relevant txt files have been created for all annotated images, one can use `create_json_file.py` to create the COCO-Style JSON file.
 
 ```
-python -m coco_dataset_generator.utils.create_json_file -i background/ -c classes/products.txt -o output.json -t jpg
+python -m coco_dataset_generator.utils.create_json_file -i background/ -c classes/products.txt 
+                                        -o output.json -t jpg
 ```
 
 ```
@@ -161,11 +167,13 @@ The same GUI is designed slightly differently in case of rectangular bounding bo
 
    EDIT MODE (when `a` is pressed and rectangle is being edited)
    
-      'a'       toggle vertex markers on and off.  When vertex markers are on, you can move them, delete them
+      'a'       toggle vertex markers on and off.  When vertex markers are on, 
+                you can move them, delete them
 
       'i'       insert rectangle in the list of final objects to save.
 
-    Left click  Use on any point on the rectangle boundary and move around by dragging to alter shape of rectangle
+    Left click  Use on any point on the rectangle boundary and move around by 
+                dragging to alter shape of rectangle
 
   REGULAR MODE 
   
@@ -191,21 +199,22 @@ The same GUI is designed slightly differently in case of rectangular bounding bo
 
         FILE                            FUNCTIONALITY
 
-    cut_objects.py                  Cuts objects based on bounding box annotations using dataset.json file and 
-                                    creates occlusion-based augmented images dataset.
+    cut_objects.py                  Cuts objects based on bounding box annotations using dataset.json file 
+                                    and creates occlusion-based augmented images dataset.
     
-    create_json_file.py             Takes a directory of annotated images (use segment.py to annotate into text files) 
-                                    and returns a COCO-style JSON file.
+    create_json_file.py             Takes a directory of annotated images (use segment.py to annotate into 
+                                    text files) and returns a COCO-style JSON file.
     
-    extract_frames.py               Takes a directory of videos and extracts all the frames of all videos into a folder 
-                                    labeled adequately by the video name.
+    extract_frames.py               Takes a directory of videos and extracts all the frames of all videos 
+                                    into a folder labeled adequately by the video name.
     
-    pascal_to_coco.py               Takes a PASCAL-style dataset directory with JPEGImages/ and Annotations/ folders and 
-                                    uses the bounding box as masks to create a COCO-style JSON file.
+    pascal_to_coco.py               Takes a PASCAL-style dataset directory with JPEGImages/ and 
+                                    Annotations/ folders and uses the bounding box as masks to 
+                                    create a COCO-style JSON file.
     
     segment.py                      Read the instructions above.
     
-    segment_bbox_only.py            Same functionality but optimized for easier annotation of bbox-only type of datasets.
+    segment_bbox_only.py            Same functionality but optimized for easier annotation of bbox-only datasets.
     
     test_*.py                       Unit tests.
     

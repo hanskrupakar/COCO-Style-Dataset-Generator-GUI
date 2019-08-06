@@ -50,9 +50,11 @@ python3 -m coco_dataset_generator.gui.segment_bbox_only -i background/ -c classe
 To run the particular model for the demo, download the pretrained weights from [HERE!!!](https://drive.google.com/file/d/1GaKVP3BvTfMwPbhEm4nF7fLATV-eDkFQ/view?usp=sharing). Download and extract pretrained weights into the repository. 
 
 ```
-python3 -m coco_dataset_generator.gui.segment -i background/ -c classes/products.txt -w <MODEL_FILE> [--config <CONFIG_FILE>] 
+python3 -m coco_dataset_generator.gui.segment -i background/ -c classes/products.txt \
+                                              -w <MODEL_FILE> [--config <CONFIG_FILE>] 
 
-python3 -m coco_dataset_generator.gui.segment_bbox_only -i background/ -c classes/products.txt -w <MODEL_FILE> [--config <CONFIG_FILE>]
+python3 -m coco_dataset_generator.gui.segment_bbox_only -i background/ -c classes/products.txt \
+                                              -w <MODEL_FILE> [--config <CONFIG_FILE>]
 ```
 
 The configuration file for Mask RCNN becomes relevant when you play around with the configuration parameters that make up the network. In order to seamlessly use the repository with multiple such Mask RCNN models for different types of datasets, you could create a single config file for every project and use them as you please. The base repository has been configured to work well with the demo model provided and so any change to the parameters should be followed by generation of its corresponding config file.
@@ -88,29 +90,47 @@ In this demo, all the green patches over the objects are the rough masks generat
 
    EDIT MODE (when `a` is pressed and polygon is being edited)
    
-      'a'       toggle vertex markers on and off.  When vertex markers are on, you can move them, delete them
+      'a'       toggle vertex markers on and off.  
+                When vertex markers are on, you can move them, delete them
 
       'd'       delete the vertex under point
 
       'i'       insert a vertex at point near the boundary of the polygon.
 
-    Left click  Use on any point on the polygon boundary and move around by dragging to alter shape of polygon
+    Left click  Use on any point on the polygon boundary and move around 
+                by dragging to alter shape of polygon
 
   REGULAR MODE 
   
     Scroll Up       Zoom into image
+
     Scroll Down     Zoom out of image
+    
     Left Click      Create a point for a polygon mask around an object
+    
     Right Click     Complete the polygon currently formed by connecting all selected points
-    Left Click Drag Create a bounding box rectangle from point 1 to point 2 (works only when there are no polygon points on screen for particular object)  
-      'a'           Press key on top of overlayed polygon (from Mask RCNN or previous annotations) to select it for editing
-      'r'           Press key on top of overlayed polygon (from Mask RCNN or previous annotations) to completely remove it   
+    
+    Left Click Drag Create a bounding box rectangle from point 1 to point 2 (works only 
+                    when there are no polygon points on screen for particular object)  
+    
+      'a'           Press key on top of overlayed polygon (from Mask RCNN or 
+                    previous annotations) to select it for editing
+    
+      'r'           Press key on top of overlayed polygon (from Mask RCNN or 
+                    previous annotations) to completely remove it   
     
     BRING PREVIOUS ANNOTATIONS  Bring back the annotations from the previous image to preserve similar annotations.
-    SUBMIT                      To be clicked after Right click completes polygon! Finalizes current segmentation mask and class label picked. After this, the polygon cannot be edited.
+    
+    SUBMIT                      To be clicked after Right click completes polygon! Finalizes current segmentation mask 
+                                and class label picked. After this, the polygon cannot be edited.
+    
     NEXT                        Save all annotations created for current file and move on to next image.
-    PREV                        Goto previous image to re-annotate it. This deletes the annotations created for the file before the current one in order to rewrite the fresh annotations.
-    RESET                       If when drawing the polygon using points, the polygon doesn't cover the object properly, reset will let you start fresh with the current polygon. This deletes all the points on the image.
+    
+    PREV                        Goto previous image to re-annotate it. This deletes the annotations created for the 
+                                file before the current one in order to rewrite the fresh annotations.
+    
+    RESET                       If when drawing the polygon using points, the polygon doesn't cover the object properly, 
+                                reset will let you start fresh with the current polygon. This deletes all the points on the image.
 
 The green annotation boxes from the network can be edited by pressing on the Keyboard key `a` when the mouse pointer is on top of a particular such mask. Once you press `a`, the points making up that polygon will show up and you can then edit it using the key bindings specified. Once you're done editing the polygon, press `a` again to finalize the edits. At this point, it will become possible to submit that particular annotation and move on to the next one.
 
@@ -150,11 +170,19 @@ The same GUI is designed slightly differently in case of rectangular bounding bo
   REGULAR MODE 
   
     Scroll Up       Zoom into image
+    
     Scroll Down     Zoom out of image
+    
     Left Click Drag Create a bounding box rectangle from point 1 to point 2.  
-      'a'           Press key on top of overlayed polygon (from Mask RCNN or previous annotations) to select it for editing
-      'r'           Press key on top of overlayed polygon (from Mask RCNN or previous annotations) to completely remove it   
-      'n'           Press key to move on to next image after completing all rectangles in current image
+      
+      'a'           Press key on top of overlayed polygon (from Mask RCNN or 
+                    previous annotations) to select it for editing
+      
+      'r'           Press key on top of overlayed polygon (from Mask RCNN or 
+                    previous annotations) to completely remove it   
+      
+      'n'           Press key to move on to next image after completing all 
+                    rectangles in current image
 
       SAVE          Save all annotated objects so far
 
@@ -163,17 +191,32 @@ The same GUI is designed slightly differently in case of rectangular bounding bo
 
         FILE                            FUNCTIONALITY
 
-    cut_objects.py                  Cuts objects based on bounding box annotations using dataset.json file and creates occlusion-based augmented images dataset.
-    create_json_file.py             Takes a directory of annotated images (use segment.py to annotate into text files) and returns a COCO-style JSON file.
-    extract_frames.py               Takes a directory of videos and extracts all the frames of all videos into a folder labeled adequately by the video name.
-    pascal_to_coco.py               Takes a PASCAL-style dataset directory with JPEGImages/ and Annotations/ folders and uses the bounding box as masks to create a COCO-style JSON file.
+    cut_objects.py                  Cuts objects based on bounding box annotations using dataset.json file and 
+                                    creates occlusion-based augmented images dataset.
+    
+    create_json_file.py             Takes a directory of annotated images (use segment.py to annotate into text files) 
+                                    and returns a COCO-style JSON file.
+    
+    extract_frames.py               Takes a directory of videos and extracts all the frames of all videos into a folder 
+                                    labeled adequately by the video name.
+    
+    pascal_to_coco.py               Takes a PASCAL-style dataset directory with JPEGImages/ and Annotations/ folders and 
+                                    uses the bounding box as masks to create a COCO-style JSON file.
+    
     segment.py                      Read the instructions above.
+    
     segment_bbox_only.py            Same functionality but optimized for easier annotation of bbox-only type of datasets.
+    
     test_*.py                       Unit tests.
+    
     visualize_dataset.py            Visualize the annotations created using the tool.
+    
     visualize_json_file.py          Visualize the dataset JSON file annotations on the entire dataset.
+    
     compute_dataset_statistics.py   Find distribution of objects in the dataset by counts.
+    
     combine_json_files.py           Combine different JSON files together into a single dataset file.
+    
     delete_images.py                Delete necessary images from the JSON dataset.
     
 NOTE: Please use `python <FILENAME>.py -h` for details on how to use each of the above files.  

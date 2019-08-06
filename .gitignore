@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
 node_modules/
+*.egg-info
+*.h5
+dist/

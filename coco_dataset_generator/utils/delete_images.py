@@ -10,10 +10,10 @@ def press(event):
         exit()
     
     if event.key.lower() == 'd':
-        del new_imgs[ptr]
         for ann in anns:
             new_anns.remove(ann)
         print ('Deleted image:', new_imgs[ptr]["file_name"], "from the dataset!")
+        del new_imgs[ptr]
             
     if event.key.lower() == 'j':
         print ("Saving dataset to file! Please wait!")

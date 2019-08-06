@@ -32,7 +32,6 @@ if __name__=='__main__':
         print (imgpath)
         if os.path.exists(imgpath):
             anns = [ann for ann in annotations if ann["image_id"]==img["id"]]
-            print (len(anns))
             image_cv2 = cv2.imread(imgpath)
             ann_img = image_cv2.copy()
             for ann in anns:

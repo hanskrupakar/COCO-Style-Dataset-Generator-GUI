@@ -16,11 +16,11 @@ from matplotlib.widgets import RectangleSelector, Button, RadioButtons
 from matplotlib.lines import Line2D
 from matplotlib.artist import Artist
 
-from poly_editor import PolygonInteractor
+from .poly_editor import PolygonInteractor
 
 from matplotlib.mlab import dist_point_to_segment
 import sys
-from visualize_dataset import return_info
+from ..utils.visualize_dataset import return_info
 
 import json
 
@@ -92,7 +92,6 @@ class COCO_dataset_generator(object):
             self.images, self.annotations = d['images'], d['annotations']
             self.index = len(self.images)
             self.ann_id = len(self.annotations)
-        print (self.index)
         prev_files = [x['file_name'] for x in self.images]
         for i, f in enumerate(img_paths):
             im = Image.open(f)
@@ -106,18 +105,14 @@ class COCO_dataset_generator(object):
         self.ax.imshow(image, aspect='auto')
 
         if not args['no_feedback']:
-            sys.path.append(args['maskrcnn_dir'])
-            from config import Config
-            import model as modellib
-            from visualize_cv2 import random_colors
+            from mask_rcnn.get_json_config import get_demo_config 
+            from mask_rcnn import model as modellib
+            from mask_rcnn.visualize_cv2 import random_colors
         
-            class InstanceConfig(Config):
-                NAME = os.path.basename(model_path)
-                GPU_COUNT = 1
-                IMAGES_PER_GPU = 1
-                NUM_CLASSES = 22 + 1
-                IMAGE_SHAPE = np.array([Config.IMAGE_MIN_DIM, Config.IMAGE_MIN_DIM, 3])
-            self.config = InstanceConfig()
+            self.config = get_demo_config(len(self.classes)-1, True)
+
+            if 'config_path' in args:
+                self.config.from_json(args['config_path'])
         
             plt.connect('draw_event', self.persist)
         
@@ -190,8 +185,8 @@ class COCO_dataset_generator(object):
         self.ax.figure.canvas.draw()
 
     def save(self, event):
-        if len(self.objects) == 0:
-            data = {'images':self.images[:self.index+1], 'annotations':self.annotations, 'categories':[], 'classes': self.classes}
+        
+        data = {'images':self.images[:self.index+1], 'annotations':self.annotations, 'categories':[], 'classes': self.classes}
 
         with open('output.json', 'w') as outfile:
             json.dump(data, outfile)
@@ -228,7 +223,7 @@ class COCO_dataset_generator(object):
                 poly = [b[0], b[2], b[0], b[3], b[1], b[3], b[1], b[2], b[0], b[2]]
                 area = (b[1]-b[0])*(b[3]-b[2])
                 bbox = [b[0], b[2], b[1], b[3]]
-                dic2 = {'segmentation': poly, 'area': area, 'iscrowd':0, 'image_id':self.index, 'bbox':bbox, 'category_id': self.classes.index(self.radio.value_selected)+1, 'id': self.ann_id}
+                dic2 = {'segmentation': [poly], 'area': area, 'iscrowd':0, 'image_id':self.index, 'bbox':bbox, 'category_id': self.classes.index(self.radio.value_selected)+1, 'id': self.ann_id}
                 if dic2 not in self.annotations:
                     self.annotations.append(dic2)
                 self.ann_id+=1
@@ -245,8 +240,6 @@ class COCO_dataset_generator(object):
             if (len(self.objects)==self.num_pred):
                 self.images.pop(self.index-1)
                 self.index-=1
-            print(self.index)
-            print (self.images)
             if self.index==len(self.images):
                 exit()
             image = plt.imread(self.images[self.index]['file_name'])
@@ -292,12 +285,12 @@ if __name__=='__main__':
     ap.add_argument("-c", "--classes_file", required=True, help="Path to classes file") 
     ap.add_argument("-j", "--json_file", required=False, help="Path of JSON file to append dataset to", default=None)
     ap.add_argument("--save_csv", required=False, action="store_true", help="Choose option to save dataset as CSV file annotations.csv")
-    ap.add_argument("-n", "--no_feedback", required=False, help="Whether or not to include AI feedback", action='store_true')
-    ap.add_argument('-p', "--maskrcnn_dir", default='/home/hans/Desktop/Vision Internship/Mask_RCNN/', help="Path to Mask RCNN Repo")
-    ap.add_argument('-w', "--weights_path", default='/home/hans/Desktop/Vision Internship/Mask_RCNN/logs/mask_rcnn_overfit3.h5', help="Path to Mask RCNN checkpoint save file")
+    ap.add_argument('-w', "--weights_path", default=None, help="Path to Mask RCNN checkpoint save file")
+    ap.add_argument('-x', "--config_path", default=None, help="Path to Mask RCNN JSON config file")
     args = vars(ap.parse_args())
     
-    
+    args["no_feedback"] = 'weights_path' not in args
+
     fig = plt.figure(figsize=(14, 14))
     ax = plt.gca()
     

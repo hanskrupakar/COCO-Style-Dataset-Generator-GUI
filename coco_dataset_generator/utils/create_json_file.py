@@ -8,7 +8,7 @@ import json
 import unicodedata
 
 from PIL import Image
-from segment import COCO_dataset_generator as cocogen
+from ..gui.segment import COCO_dataset_generator as cocogen
 
 if __name__=='__main__':
 

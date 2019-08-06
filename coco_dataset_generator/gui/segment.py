@@ -16,11 +16,11 @@ from matplotlib.widgets import Button
 from matplotlib.lines import Line2D
 from matplotlib.artist import Artist
 
-from poly_editor import PolygonInteractor
+from .poly_editor import PolygonInteractor
 
 from matplotlib.mlab import dist_point_to_segment
 import sys
-from visualize_dataset import return_info
+from ..utils.visualize_dataset import return_info
 
 class COCO_dataset_generator(object):
 
@@ -71,7 +71,7 @@ class COCO_dataset_generator(object):
         self.text = ''
 
         with open(args['class_file'], 'r') as f:
-            self.class_names = [x.strip() for x in f.readlines()]
+            self.class_names = [x.strip() for x in f.readlines() if x.strip() != ""]
 
         self.radio = RadioButtons(self.axradio, self.class_names)
         self.class_names = ('BG',) + tuple(self.class_names)
@@ -83,7 +83,13 @@ class COCO_dataset_generator(object):
         if os.path.exists(self.img_paths[self.index][:-3]+'txt'):
             self.index = len(glob.glob(os.path.join(self.img_dir, '*.txt')))
         self.checkpoint = self.index
-        im = Image.open(self.img_paths[self.index])
+        
+        try:
+            im = Image.open(self.img_paths[self.index])
+        except IndexError:
+            print ("Reached end of dataset! Delete some TXT files if you want to relabel some images in the folder")
+            exit()
+
         width, height = im.size
         im.close()
 
@@ -91,17 +97,19 @@ class COCO_dataset_generator(object):
 
         if args['feedback']:
 
-            sys.path.append(args['maskrcnn_dir'])
-            import model as modellib
-            from demo import BagsConfig
+            from mask_rcnn import model as modellib
+            from mask_rcnn.get_json_config import get_demo_config
             
             #from skimage.measure import find_contours
-            from contours import find_contours
+            from .contours import find_contours
 
-            from visualize_cv2 import random_colors
+            from mask_rcnn.visualize_cv2 import random_colors
             
-            config = BagsConfig(len(self.class_names)-2)
+            config = get_demo_config(len(self.class_names)-2, True)
             
+            if args['config_path'] is not None:
+                config.from_json(args['config_path'])
+
             # Create model object in inference mode.
             model = modellib.MaskRCNN(mode="inference", model_dir='/'.join(args['weights_path'].split('/')[:-2]), config=config)
 
@@ -426,10 +434,11 @@ if __name__=='__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument("-i", "--image_dir", required=True, help="Path to the image dir")
     ap.add_argument("-c", "--class_file", required=True, help="Path to the classes file of the dataset")
-    ap.add_argument("-f", "--feedback", required=False, help="Whether or not to include AI feedback", action='store_true')
-    ap.add_argument('-p', "--maskrcnn_dir", default='/home/hans/Desktop/Vision Internship/Mask_RCNN/', help="Path to Mask RCNN Repo")
-    ap.add_argument('-w', "--weights_path", default='/home/hans/Desktop/Vision Internship/Mask_RCNN/logs/imagenet_10/mask_rcnn_bags_0006.h5', help="Path to Mask RCNN checkpoint save file")
+    ap.add_argument('-w', "--weights_path", default=None, help="Path to Mask RCNN checkpoint save file")
+    ap.add_argument('-x', "--config_path", default=None, help="Path to Mask RCNN training config JSON file to load model based on specific parameters")
     args = vars(ap.parse_args())
+    
+    args['feedback'] = args['weights_path'] is not None
 
     fig = plt.figure(figsize=(14, 14))
     ax = plt.gca()

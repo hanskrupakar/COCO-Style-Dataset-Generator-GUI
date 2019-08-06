@@ -7,7 +7,7 @@ import time
 from shapely.geometry import Polygon
 
 #from skimage.measure import find_contours
-from contours import find_contours
+from ..gui.contours import find_contours
 
 from PIL import Image, ImageDraw
 

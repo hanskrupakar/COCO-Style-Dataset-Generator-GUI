@@ -11,7 +11,8 @@ import argparse
 import os
 
 def cleanup_utf8(array):
-    return [x.encode('ascii', errors='ignore').decode('utf-8').strip() for x in array]
+    arr = [x.encode('ascii', errors='ignore').decode('utf-8') for x in array]
+    return list(map(lambda x: x.strip().strip('\"').strip('\''), arr))
 
 def merge_json(files, outfile='merged_dataset.json', abspath=False):
 
@@ -48,6 +49,9 @@ def merge_json(files, outfile='merged_dataset.json', abspath=False):
             obj['classes'] = cleanup_utf8(obj['classes'])
    
             if classes != obj["classes"]:
+                print ("CLASSES MISMATCH BETWEEN:")
+                print (classes)
+                print (obj['classes'])
                 if len(obj['classes']) < len(classes):
                     c1, c2 = obj['classes'], classes
                     new = True
@@ -63,13 +67,14 @@ def merge_json(files, outfile='merged_dataset.json', abspath=False):
                         c2.append(c)
                         mapping[idx] = len(c2) - 1
                 
+                print ('MAPPING: ', mapping)
                 if not new:
                     for idx, ann in enumerate(annotations):
-                        annotations[idx]['category_id'] = mapping[ann['category_id']]
+                        annotations[idx]['category_id'] = mapping[ann['category_id']-1] + 1
                     classes = obj['classes']
                 else:
                     for idx, ann in enumerate(obj['annotations']):
-                        obj['annotations'][idx]['category_id'] = mapping[ann['category_id']]
+                        obj['annotations'][idx]['category_id'] = mapping[ann['category_id']-1] + 1 
                     obj['classes'] = classes
             
                 print ("CHANGE IN NUMBER OF CLASSES HAS BEEN DETECTED BETWEEN JSON FILES")

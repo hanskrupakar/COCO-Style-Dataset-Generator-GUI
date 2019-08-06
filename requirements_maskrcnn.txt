@@ -1,0 +1,4 @@
+imutils==0.5.2
+-e git+https://www.github.com/hanskrupakar/Mask_RCNN@master#egg=mask_rcnn
+pycocotools==2.0.0
+simplification==0.3.9

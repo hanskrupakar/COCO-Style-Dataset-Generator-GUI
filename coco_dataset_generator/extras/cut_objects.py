@@ -1,5 +1,6 @@
 import numpy as np
-np.set_printoptions(threshold=np.nan)
+import sys
+np.set_printoptions(threshold=sys.maxsize)
 
 import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw
@@ -12,7 +13,7 @@ import glob
 import os
 import time
 #from skimage.measure import find_contours
-from contours import find_contours
+from ..gui.contours import find_contours
 
 class Occlusion_Generator_Bbox(object):
 
@@ -31,14 +32,18 @@ class Occlusion_Generator_Bbox(object):
                 self.objToAnns[obj['category_id']].append({'image': obj['image_id'], 'bbox':obj['bbox']})
         
         self.bg_dir = bg_dir
-        self.set_random_background()
+        
         self.imgs_dir = imgs_path
+        self.set_random_background()
+
         self.classes = ['BG'] + self.dataset['classes']
         self.curve_factor = curve_factor
-    
+        
     def set_random_background(self):
-
-        bg_path = random.choice(glob.glob(os.path.join(self.bg_dir, '*')))
+        
+        imgs = [x for x in glob.glob(os.path.join(self.bg_dir, '*')) if 'txt' not in x]
+        print (imgs, self.bg_dir)
+        bg_path = random.choice(imgs)
         self.img = Image.open(bg_path).convert("RGBA")
         self.mask_img = Image.new('L', self.img.size, 0)
         self.text = ''

@@ -214,7 +214,8 @@ The same GUI is designed slightly differently in case of rectangular bounding bo
     
     segment.py                      Read the instructions above.
     
-    segment_bbox_only.py            Same functionality but optimized for easier annotation of bbox-only datasets.
+    segment_bbox_only.py            Same functionality but optimized for easier annotation of 
+                                    bbox-only datasets.
     
     test_*.py                       Unit tests.
     

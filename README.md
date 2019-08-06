@@ -199,14 +199,14 @@ The same GUI is designed slightly differently in case of rectangular bounding bo
 
         FILE                            FUNCTIONALITY
 
-    cut_objects.py                  Cuts objects based on bounding box annotations using dataset.json file 
-                                    and creates occlusion-based augmented images dataset.
+    cut_objects.py                  Cuts objects based on bounding box annotations using dataset.json 
+                                    file and creates occlusion-based augmented images dataset.
     
-    create_json_file.py             Takes a directory of annotated images (use segment.py to annotate into 
-                                    text files) and returns a COCO-style JSON file.
+    create_json_file.py             Takes a directory of annotated images (use segment.py to annotate 
+                                    into text files) and returns a COCO-style JSON file.
     
-    extract_frames.py               Takes a directory of videos and extracts all the frames of all videos 
-                                    into a folder labeled adequately by the video name.
+    extract_frames.py               Takes a directory of videos and extracts all the frames of all 
+                                    videos into a folder labeled adequately by the video name.
     
     pascal_to_coco.py               Takes a PASCAL-style dataset directory with JPEGImages/ and 
                                     Annotations/ folders and uses the bounding box as masks to 

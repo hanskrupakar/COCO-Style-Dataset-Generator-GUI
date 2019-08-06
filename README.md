@@ -63,10 +63,8 @@ HINT: Use `get_json_config.py` inside `Mask RCNN` to get config file wrt specifi
 
 `USAGE: segment.py [-h] -i IMAGE_DIR -c CLASS_FILE [-w WEIGHTS_PATH] [-x CONFIG_PATH]`
 
-````
-USAGE: segment_bbox_only.py [-h] -i IMAGE_FILE -c CLASSES_FILE [-j JSON_FILE] \
-        [--save_csv] [-w WEIGHTS_PATH] [-x CONFIG_PATH]
-```
+`USAGE: segment_bbox_only.py [-h] -i IMAGE_FILE -c CLASSES_FILE [-j JSON_FILE]
+        [--save_csv] [-w WEIGHTS_PATH] [-x CONFIG_PATH]`
 
 ##### Optional Arguments 
 

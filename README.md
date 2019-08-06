@@ -57,7 +57,7 @@ python3 -m coco_dataset_generator.gui.segment_bbox_only -i background/ -c classe
 
 The configuration file for Mask RCNN becomes relevant when you play around with the configuration parameters that make up the network. In order to seamlessly use the repository with multiple such Mask RCNN models for different types of datasets, you could create a single config file for every project and use them as you please. The base repository has been configured to work well with the demo model provided and so any change to the parameters should be followed by generation of its corresponding config file.
 
-HINT: Use `get_json_config.py` inside `Mask RCNN` to get config file wrt specific parameters of Mask RCNN. You could either clone [Mask_RCNN](https://www.github.com/hanskrupakar/Mask_RCNN) and use `pip install -e Mask_RCNN/` to get access to `get_json_config.py` easily or you could find where pip install `mask_rcnn` and find it directly from the source. 
+HINT: Use `get_json_config.py` inside `Mask RCNN` to get config file wrt specific parameters of Mask RCNN. You could either clone [Mask_RCNN](https://www.github.com/hanskrupakar/Mask_RCNN), use `pip install -e Mask_RCNN/` to replace the mask_rcnn installed from this repo and then get access to `get_json_config.py` easily or you could find where pip install `mask_rcnn` and find it directly from the source. 
 
 `USAGE: segment.py [-h] -i IMAGE_DIR -c CLASS_FILE [-w WEIGHTS_PATH] [-x CONFIG_PATH]`
 

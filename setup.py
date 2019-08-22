@@ -1,8 +1,9 @@
 from setuptools import setup, find_packages
 import os
+import sys
 
 def install(package):
-    os.system("pip install %s"%(package))
+    os.system("pip%d install %s"%(sys.version_info[0], package))
 
 if os.getenv('MASK_RCNN'):
     

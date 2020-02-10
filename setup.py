@@ -1,27 +1,23 @@
 from setuptools import setup, find_packages
 import os
 import sys
+import subprocess
 
 def install(package):
-    os.system("pip%d install %s"%(sys.version_info[0], package))
+    subprocess.call([sys.executable, "-m", "pip", "install", package])
 
 if os.getenv('MASK_RCNN'):
-    
-    with open('requirements_maskrcnn.txt', 'r') as f:
-        packs = [x.strip() for x in f.readlines()]
-        
-    for p in packs:
-        install(p)	
-    dependencies = []
+    fl = 'requirements_maskrcnn.txt'
 else:
-    dependencies = [
-	"matplotlib==3.0.3",
-	"numpy==1.16.4",
-	"opencv-python",
-    "Pillow",
-	"scikit-image",
-	"scipy",
-	]
+    fl = 'requirements.txt'
+
+with open(fl, 'r') as f:
+    packs = [x.strip() for x in f.readlines()]
+        
+for p in packs:
+    install(p)	
+
+dependencies = []
 	
 packages = [
     package for package in find_packages() if package.startswith('coco_dataset_generator')

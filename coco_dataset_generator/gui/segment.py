@@ -16,9 +16,8 @@ from matplotlib.widgets import Button
 from matplotlib.lines import Line2D
 from matplotlib.artist import Artist
 
-from .poly_editor import PolygonInteractor
+from .poly_editor import PolygonInteractor, dist_point_to_segment
 
-from matplotlib.mlab import dist_point_to_segment
 import sys
 from ..utils.visualize_dataset import return_info
 

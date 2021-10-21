@@ -9,6 +9,8 @@ This is a simple GUI-based Widget based on matplotlib in Python to facilitate qu
 `Python 3.5+` is required to run the Mask RCNN code. If only the GUI tool is used, `Python2.7` or `Python3.5+` can be used.
 
 ###### NOTE: For python2.7, OpenCV needs to be installed from source and configured to be in the environment running the code.
+###### Before installing, please upgrade setuptools using: pip install --upgrade setuptools
+###### For Windows users, please install Visual Studio C++ 14 or higher if necessary using this link: http://go.microsoft.com/fwlink/?LinkId=691126&fixForIE=.exe. 
 
 ### RUN THE SEGMENTOR GUI:
 
